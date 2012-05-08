@@ -1,0 +1,208 @@
+   1               		.file	"led_output.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	led_setup
+  18               	led_setup:
+  19               	.LFB0:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	/* stack size = 0 */
+  24               	.L__stack_usage = 0
+  25               	.LM2:
+  26 0000 81E0      		ldi r24,lo8(1)
+  27 0002 84B9      		out 36-32,r24
+  28               	.LM3:
+  29 0004 17B8      		out 39-32,__zero_reg__
+  30               	.LM4:
+  31 0006 8CEF      		ldi r24,lo8(-4)
+  32 0008 8AB9      		out 42-32,r24
+  33               	.LM5:
+  34 000a 15B8      		out 37-32,__zero_reg__
+  35               	.LM6:
+  36 000c 1BB8      		out 43-32,__zero_reg__
+  37               	.LM7:
+  38 000e 1092 0000 		sts LED_PortB,__zero_reg__
+  39               	.LM8:
+  40 0012 1092 0000 		sts LED_PortD,__zero_reg__
+  41               	.LM9:
+  42 0016 1092 0000 		sts LEDs_On_Data+1,__zero_reg__
+  43 001a 1092 0000 		sts LEDs_On_Data,__zero_reg__
+  44               	/* epilogue start */
+  45               	.LM10:
+  46 001e 0895      		ret
+  47               	.LFE0:
+  49               	.global	led_illuminate
+  51               	led_illuminate:
+  52               	.LFB1:
+  53               	.LM11:
+  54               	.LVL0:
+  55 0020 EF92      		push r14
+  56 0022 FF92      		push r15
+  57 0024 1F93      		push r17
+  58 0026 CF93      		push r28
+  59 0028 DF93      		push r29
+  60               	/* prologue: function */
+  61               	/* frame size = 0 */
+  62               	/* stack size = 5 */
+  63               	.L__stack_usage = 5
+  64               	.LM12:
+  65 002a FC01      		movw r30,r24
+  66 002c 33E0      		ldi r19,3
+  67 002e F595      	1:	asr r31
+  68 0030 E795      		ror r30
+  69 0032 3A95      		dec r19
+  70 0034 01F4      		brne 1b
+  71               	.LVL1:
+  72               	.LM13:
+  73 0036 1092 0000 		sts LED_row,__zero_reg__
+  74               	.LM14:
+  75 003a 81E0      		ldi r24,lo8(1)
+  76 003c 90E0      		ldi r25,hi8(1)
+  77               	.LM15:
+  78 003e 00C0      		rjmp .L3
+  79               	.L9:
+  80               	.LM16:
+  81 0040 B0E0      		ldi r27,lo8(0)
+  82 0042 9D01      		movw r18,r26
+  83 0044 2E5F      		subi r18,lo8(-(2))
+  84 0046 3F4F      		sbci r19,hi8(-(2))
+  85 0048 7C01      		movw r14,r24
+  86 004a 00C0      		rjmp 2f
+  87 004c EE0C      	1:	lsl r14
+  88 004e FF1C      		rol r15
+  89 0050 2A95      	2:	dec r18
+  90 0052 02F4      		brpl 1b
+  91 0054 1E2D      		mov r17,r14
+  92 0056 1095      		com r17
+  93               	.LM17:
+  94 0058 2091 0000 		lds r18,LED_PortD
+  95 005c 2C61      		ori r18,lo8(28)
+  96               	.LM18:
+  97 005e 1223      		and r17,r18
+  98               	.LVL2:
+  99               	.LBB2:
+ 100               	.LBB3:
+ 101               	.LM19:
+ 102 0060 AA0F      		lsl r26
+ 103 0062 BB1F      		rol r27
+ 104 0064 AA0F      		lsl r26
+ 105 0066 BB1F      		rol r27
+ 106 0068 AD01      		movw r20,r26
+ 107 006a 25E0      		ldi r18,lo8(5)
+ 108 006c 30E0      		ldi r19,hi8(5)
+ 109               	.LVL3:
+ 110               	.L6:
+ 111 006e BC01      		movw r22,r24
+ 112 0070 042E      		mov r0,r20
+ 113 0072 00C0      		rjmp 2f
+ 114 0074 660F      	1:	lsl r22
+ 115 0076 771F      		rol r23
+ 116 0078 0A94      	2:	dec r0
+ 117 007a 02F4      		brpl 1b
+ 118 007c 6E23      		and r22,r30
+ 119 007e 7F23      		and r23,r31
+ 120 0080 EC01      		movw r28,r24
+ 121 0082 022E      		mov r0,r18
+ 122 0084 00C0      		rjmp 2f
+ 123 0086 CC0F      	1:	lsl r28
+ 124 0088 DD1F      		rol r29
+ 125 008a 0A94      	2:	dec r0
+ 126 008c 02F4      		brpl 1b
+ 127 008e 1616      		cp __zero_reg__,r22
+ 128 0090 1706      		cpc __zero_reg__,r23
+ 129 0092 04F4      		brge .L4
+ 130               	.LM20:
+ 131 0094 1C2B      		or r17,r28
+ 132 0096 00C0      		rjmp .L5
+ 133               	.L4:
+ 134               	.LM21:
+ 135 0098 7E01      		movw r14,r28
+ 136 009a E094      		com r14
+ 137 009c 1E21      		and r17,r14
+ 138               	.L5:
+ 139 009e 4F5F      		subi r20,lo8(-(1))
+ 140 00a0 5F4F      		sbci r21,hi8(-(1))
+ 141 00a2 2F5F      		subi r18,lo8(-(1))
+ 142 00a4 3F4F      		sbci r19,hi8(-(1))
+ 143               	.LBE3:
+ 144               	.LM22:
+ 145 00a6 2830      		cpi r18,8
+ 146 00a8 3105      		cpc r19,__zero_reg__
+ 147 00aa 01F4      		brne .L6
+ 148 00ac 1093 0000 		sts LED_PortD,r17
+ 149               	.LBE2:
+ 150               	.LM23:
+ 151 00b0 1396      		adiw r26,3
+ 152 00b2 9C01      		movw r18,r24
+ 153 00b4 00C0      		rjmp 2f
+ 154 00b6 220F      	1:	lsl r18
+ 155 00b8 331F      		rol r19
+ 156 00ba AA95      	2:	dec r26
+ 157 00bc 02F4      		brpl 1b
+ 158 00be 2E23      		and r18,r30
+ 159 00c0 3F23      		and r19,r31
+ 160 00c2 4091 0000 		lds r20,LED_PortB
+ 161 00c6 1216      		cp __zero_reg__,r18
+ 162 00c8 1306      		cpc __zero_reg__,r19
+ 163 00ca 04F4      		brge .L7
+ 164               	.LM24:
+ 165 00cc 4160      		ori r20,lo8(1)
+ 166 00ce 00C0      		rjmp .L11
+ 167               	.L7:
+ 168               	.LM25:
+ 169 00d0 4E7F      		andi r20,lo8(-2)
+ 170               	.L11:
+ 171 00d2 4093 0000 		sts LED_PortB,r20
+ 172               	.LM26:
+ 173 00d6 2091 0000 		lds r18,LED_PortB
+ 174 00da 25B9      		out 37-32,r18
+ 175               	.LM27:
+ 176 00dc 2091 0000 		lds r18,LED_PortD
+ 177 00e0 2BB9      		out 43-32,r18
+ 178               	.LM28:
+ 179 00e2 2091 0000 		lds r18,LED_row
+ 180 00e6 2F5F      		subi r18,lo8(-(1))
+ 181 00e8 2093 0000 		sts LED_row,r18
+ 182               	.L3:
+ 183               	.LM29:
+ 184 00ec A091 0000 		lds r26,LED_row
+ 185 00f0 A330      		cpi r26,lo8(3)
+ 186 00f2 00F4      		brsh .+2
+ 187 00f4 00C0      		rjmp .L9
+ 188               	/* epilogue start */
+ 189               	.LM30:
+ 190 00f6 DF91      		pop r29
+ 191 00f8 CF91      		pop r28
+ 192 00fa 1F91      		pop r17
+ 193 00fc FF90      		pop r15
+ 194 00fe EF90      		pop r14
+ 195 0100 0895      		ret
+ 196               	.LFE1:
+ 198               		.comm LED_row,1,1
+ 199               		.comm LED_PortB,1,1
+ 200               		.comm LED_PortD,1,1
+ 201               		.lcomm LEDs_On_Data,2
+ 234               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 led_output.c
+     /tmp/ccaWOzUv.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccaWOzUv.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccaWOzUv.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccaWOzUv.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccaWOzUv.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccaWOzUv.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccaWOzUv.s:18     .text:00000000 led_setup
+                            *COM*:00000001 LED_PortB
+                            *COM*:00000001 LED_PortD
+                             .bss:00000000 LEDs_On_Data
+     /tmp/ccaWOzUv.s:51     .text:00000020 led_illuminate
+                            *COM*:00000001 LED_row
+
+UNDEFINED SYMBOLS
+__do_clear_bss

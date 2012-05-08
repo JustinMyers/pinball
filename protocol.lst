@@ -1,0 +1,306 @@
+   1               		.file	"protocol.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	USARTSetup
+  18               	USARTSetup:
+  19               	.LFB1:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	/* stack size = 0 */
+  24               	.L__stack_usage = 0
+  25               	.LM2:
+  26 0000 E1EC      		ldi r30,lo8(193)
+  27 0002 F0E0      		ldi r31,hi8(193)
+  28 0004 8081      		ld r24,Z
+  29 0006 8861      		ori r24,lo8(24)
+  30 0008 8083      		st Z,r24
+  31               	.LM3:
+  32 000a A2EC      		ldi r26,lo8(194)
+  33 000c B0E0      		ldi r27,hi8(194)
+  34 000e 8C91      		ld r24,X
+  35 0010 8660      		ori r24,lo8(6)
+  36 0012 8C93      		st X,r24
+  37               	.LM4:
+  38 0014 1092 C500 		sts 197,__zero_reg__
+  39               	.LM5:
+  40 0018 8AE0      		ldi r24,lo8(10)
+  41 001a 8093 C400 		sts 196,r24
+  42               	.LM6:
+  43 001e 8081      		ld r24,Z
+  44 0020 8068      		ori r24,lo8(-128)
+  45 0022 8083      		st Z,r24
+  46               	.LM7:
+  47               	/* #APP */
+  48               	 ;  19 "../protocol.c" 1
+  49 0024 7894      		sei
+  50               	 ;  0 "" 2
+  51               	/* epilogue start */
+  52               	.LM8:
+  53               	/* #NOAPP */
+  54 0026 0895      		ret
+  55               	.LFE1:
+  57               	.global	TIMERSetup
+  59               	TIMERSetup:
+  60               	.LFB2:
+  61               	.LM9:
+  62               	/* prologue: function */
+  63               	/* frame size = 0 */
+  64               	/* stack size = 0 */
+  65               	.L__stack_usage = 0
+  66               	.LM10:
+  67 0028 E0EB      		ldi r30,lo8(176)
+  68 002a F0E0      		ldi r31,hi8(176)
+  69 002c 8081      		ld r24,Z
+  70 002e 8260      		ori r24,lo8(2)
+  71 0030 8083      		st Z,r24
+  72               	.LM11:
+  73 0032 8BE9      		ldi r24,lo8(-101)
+  74 0034 8093 B300 		sts 179,r24
+  75               	.LM12:
+  76 0038 E1EB      		ldi r30,lo8(177)
+  77 003a F0E0      		ldi r31,hi8(177)
+  78 003c 8081      		ld r24,Z
+  79 003e 8560      		ori r24,lo8(5)
+  80 0040 8083      		st Z,r24
+  81               	/* epilogue start */
+  82               	.LM13:
+  83 0042 0895      		ret
+  84               	.LFE2:
+  86               	.global	delay_ms
+  88               	delay_ms:
+  89               	.LFB5:
+  90               	.LM14:
+  91               	.LVL0:
+  92               	/* prologue: function */
+  93               	/* frame size = 0 */
+  94               	/* stack size = 0 */
+  95               	.L__stack_usage = 0
+  96               	.LM15:
+  97 0044 32E0      		ldi r19,lo8(2)
+  98               	.LM16:
+  99 0046 00C0      		rjmp .L4
+ 100               	.L6:
+ 101               	.LM17:
+ 102 0048 23B5      		in r18,67-32
+ 103 004a 2068      		ori r18,lo8(-128)
+ 104 004c 23BD      		out 67-32,r18
+ 105               	.L5:
+ 106               	.LM18:
+ 107 004e B99B      		sbis 55-32,1
+ 108 0050 00C0      		rjmp .L5
+ 109               	.LM19:
+ 110 0052 37BB      		out 55-32,r19
+ 111               	.LM20:
+ 112 0054 0197      		sbiw r24,1
+ 113               	.LVL1:
+ 114               	.L4:
+ 115               	.LM21:
+ 116 0056 0097      		sbiw r24,0
+ 117 0058 01F4      		brne .L6
+ 118               	/* epilogue start */
+ 119               	.LM22:
+ 120 005a 0895      		ret
+ 121               	.LFE5:
+ 123               	.global	protocol_send_data
+ 125               	protocol_send_data:
+ 126               	.LFB4:
+ 127               	.LM23:
+ 128               	.LVL2:
+ 129 005c CF93      		push r28
+ 130 005e DF93      		push r29
+ 131               	/* prologue: function */
+ 132               	/* frame size = 0 */
+ 133               	/* stack size = 2 */
+ 134               	.L__stack_usage = 2
+ 135               	.LM24:
+ 136 0060 EC01      		movw r28,r24
+ 137               	.LBB2:
+ 138               	.LM25:
+ 139 0062 00C0      		rjmp .L9
+ 140               	.LVL3:
+ 141               	.L11:
+ 142               	.LM26:
+ 143 0064 9091 C000 		lds r25,192
+ 144 0068 95FF      		sbrs r25,5
+ 145 006a 00C0      		rjmp .L11
+ 146               	.LM27:
+ 147 006c 8093 C600 		sts 198,r24
+ 148               	.LM28:
+ 149 0070 81E0      		ldi r24,lo8(1)
+ 150 0072 90E0      		ldi r25,hi8(1)
+ 151 0074 0E94 0000 		call delay_ms
+ 152               	.L9:
+ 153               	.LM29:
+ 154 0078 8991      		ld r24,Y+
+ 155 007a 8823      		tst r24
+ 156 007c 01F4      		brne .L11
+ 157               	/* epilogue start */
+ 158               	.LBE2:
+ 159               	.LM30:
+ 160 007e DF91      		pop r29
+ 161 0080 CF91      		pop r28
+ 162 0082 0895      		ret
+ 163               	.LFE4:
+ 165               		.data
+ 166               	.LC0:
+ 167 0000 7374 2523 		.string	"st%#04dr%#04d"
+ 167      3034 6472 
+ 167      2523 3034 
+ 167      6400 
+ 168               	.LC2:
+ 169 000e 2573 2573 		.string	"%s%s%s"
+ 169      2573 00
+ 170               	.LC1:
+ 171 0015 650A 00   		.string	"e\n"
+ 172               		.text
+ 173               	.global	protocol_send_message
+ 175               	protocol_send_message:
+ 176               	.LFB3:
+ 177               	.LM31:
+ 178               	.LVL4:
+ 179 0084 EF92      		push r14
+ 180 0086 FF92      		push r15
+ 181 0088 0F93      		push r16
+ 182 008a 1F93      		push r17
+ 183 008c DF93      		push r29
+ 184 008e CF93      		push r28
+ 185 0090 CDB7      		in r28,__SP_L__
+ 186 0092 DEB7      		in r29,__SP_H__
+ 187 0094 C250      		subi r28,lo8(-(-514))
+ 188 0096 D240      		sbci r29,hi8(-(-514))
+ 189 0098 0FB6      		in __tmp_reg__,__SREG__
+ 190 009a F894      		cli
+ 191 009c DEBF      		out __SP_H__,r29
+ 192 009e 0FBE      		out __SREG__,__tmp_reg__
+ 193 00a0 CDBF      		out __SP_L__,r28
+ 194               	/* prologue: function */
+ 195               	/* frame size = 514 */
+ 196               	/* stack size = 520 */
+ 197               	.L__stack_usage = 520
+ 198 00a2 7A01      		movw r14,r20
+ 199               	.LM32:
+ 200 00a4 2DB7      		in r18,__SP_L__
+ 201 00a6 3EB7      		in r19,__SP_H__
+ 202 00a8 2850      		subi r18,lo8(-(-8))
+ 203 00aa 3040      		sbci r19,hi8(-(-8))
+ 204 00ac 0FB6      		in __tmp_reg__,__SREG__
+ 205 00ae F894      		cli
+ 206 00b0 3EBF      		out __SP_H__,r19
+ 207 00b2 0FBE      		out __SREG__,__tmp_reg__
+ 208 00b4 2DBF      		out __SP_L__,r18
+ 209 00b6 EDB7      		in r30,__SP_L__
+ 210 00b8 FEB7      		in r31,__SP_H__
+ 211 00ba 3196      		adiw r30,1
+ 212 00bc 9E01      		movw r18,r28
+ 213 00be 2C5F      		subi r18,lo8(-(4))
+ 214 00c0 3F4F      		sbci r19,hi8(-(4))
+ 215 00c2 ADB7      		in r26,__SP_L__
+ 216 00c4 BEB7      		in r27,__SP_H__
+ 217 00c6 1296      		adiw r26,1+1
+ 218 00c8 3C93      		st X,r19
+ 219 00ca 2E93      		st -X,r18
+ 220 00cc 1197      		sbiw r26,1
+ 221 00ce 20E0      		ldi r18,lo8(.LC0)
+ 222 00d0 30E0      		ldi r19,hi8(.LC0)
+ 223 00d2 3383      		std Z+3,r19
+ 224 00d4 2283      		std Z+2,r18
+ 225 00d6 9583      		std Z+5,r25
+ 226 00d8 8483      		std Z+4,r24
+ 227 00da 7783      		std Z+7,r23
+ 228 00dc 6683      		std Z+6,r22
+ 229 00de 0E94 0000 		call sprintf
+ 230               	.LVL5:
+ 231               	.LM33:
+ 232 00e2 DE01      		movw r26,r28
+ 233 00e4 1196      		adiw r26,1
+ 234 00e6 E0E0      		ldi r30,lo8(.LC1)
+ 235 00e8 F0E0      		ldi r31,hi8(.LC1)
+ 236 00ea 83E0      		ldi r24,lo8(3)
+ 237               	.L14:
+ 238 00ec 0190      		ld r0,Z+
+ 239 00ee 0D92      		st X+,r0
+ 240 00f0 8150      		subi r24,lo8(-(-1))
+ 241 00f2 01F4      		brne .L14
+ 242               	.LM34:
+ 243 00f4 00D0      		rcall .
+ 244 00f6 EDB7      		in r30,__SP_L__
+ 245 00f8 FEB7      		in r31,__SP_H__
+ 246 00fa 3196      		adiw r30,1
+ 247 00fc 8E01      		movw r16,r28
+ 248 00fe 015F      		subi r16,lo8(-(15))
+ 249 0100 1F4F      		sbci r17,hi8(-(15))
+ 250 0102 ADB7      		in r26,__SP_L__
+ 251 0104 BEB7      		in r27,__SP_H__
+ 252 0106 1296      		adiw r26,1+1
+ 253 0108 1C93      		st X,r17
+ 254 010a 0E93      		st -X,r16
+ 255 010c 1197      		sbiw r26,1
+ 256 010e 80E0      		ldi r24,lo8(.LC2)
+ 257 0110 90E0      		ldi r25,hi8(.LC2)
+ 258 0112 9383      		std Z+3,r25
+ 259 0114 8283      		std Z+2,r24
+ 260 0116 CE01      		movw r24,r28
+ 261 0118 0496      		adiw r24,4
+ 262 011a 9583      		std Z+5,r25
+ 263 011c 8483      		std Z+4,r24
+ 264 011e F782      		std Z+7,r15
+ 265 0120 E682      		std Z+6,r14
+ 266 0122 CE01      		movw r24,r28
+ 267 0124 0196      		adiw r24,1
+ 268 0126 9187      		std Z+9,r25
+ 269 0128 8087      		std Z+8,r24
+ 270 012a 0E94 0000 		call sprintf
+ 271               	.LM35:
+ 272 012e 2DB7      		in r18,__SP_L__
+ 273 0130 3EB7      		in r19,__SP_H__
+ 274 0132 265F      		subi r18,lo8(-(10))
+ 275 0134 3F4F      		sbci r19,hi8(-(10))
+ 276 0136 0FB6      		in __tmp_reg__,__SREG__
+ 277 0138 F894      		cli
+ 278 013a 3EBF      		out __SP_H__,r19
+ 279 013c 0FBE      		out __SREG__,__tmp_reg__
+ 280 013e 2DBF      		out __SP_L__,r18
+ 281 0140 C801      		movw r24,r16
+ 282 0142 0E94 0000 		call protocol_send_data
+ 283               	/* epilogue start */
+ 284               	.LM36:
+ 285 0146 CE5F      		subi r28,lo8(-(514))
+ 286 0148 DD4F      		sbci r29,hi8(-(514))
+ 287 014a 0FB6      		in __tmp_reg__,__SREG__
+ 288 014c F894      		cli
+ 289 014e DEBF      		out __SP_H__,r29
+ 290 0150 0FBE      		out __SREG__,__tmp_reg__
+ 291 0152 CDBF      		out __SP_L__,r28
+ 292 0154 CF91      		pop r28
+ 293 0156 DF91      		pop r29
+ 294 0158 1F91      		pop r17
+ 295 015a 0F91      		pop r16
+ 296 015c FF90      		pop r15
+ 297 015e EF90      		pop r14
+ 298               	.LVL6:
+ 299 0160 0895      		ret
+ 300               	.LFE3:
+ 358               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 protocol.c
+     /tmp/ccrLuVfn.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccrLuVfn.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccrLuVfn.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccrLuVfn.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccrLuVfn.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccrLuVfn.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccrLuVfn.s:18     .text:00000000 USARTSetup
+     /tmp/ccrLuVfn.s:59     .text:00000028 TIMERSetup
+     /tmp/ccrLuVfn.s:88     .text:00000044 delay_ms
+     /tmp/ccrLuVfn.s:125    .text:0000005c protocol_send_data
+     /tmp/ccrLuVfn.s:175    .text:00000084 protocol_send_message
+
+UNDEFINED SYMBOLS
+sprintf
+__do_copy_data

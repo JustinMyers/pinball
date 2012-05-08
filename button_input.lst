@@ -1,0 +1,120 @@
+   1               		.file	"button_input.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	read_button
+  18               	read_button:
+  19               	.LFB0:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	/* stack size = 0 */
+  24               	.L__stack_usage = 0
+  25               	.LM2:
+  26 0000 3099      		sbic 38-32,0
+  27 0002 00C0      		rjmp .L2
+  28               	.LM3:
+  29 0004 8091 0000 		lds r24,BUTTON_1_COUNTER
+  30 0008 9091 0000 		lds r25,BUTTON_1_COUNTER+1
+  31 000c 23E0      		ldi r18,hi8(1000)
+  32 000e 883E      		cpi r24,lo8(1000)
+  33 0010 9207      		cpc r25,r18
+  34 0012 04F4      		brge .L3
+  35               	.LM4:
+  36 0014 0196      		adiw r24,1
+  37 0016 9093 0000 		sts BUTTON_1_COUNTER+1,r25
+  38 001a 8093 0000 		sts BUTTON_1_COUNTER,r24
+  39 001e 00C0      		rjmp .L4
+  40               	.L3:
+  41               	.LM5:
+  42 0020 8091 0000 		lds r24,BUTTON_1
+  43 0024 9091 0000 		lds r25,BUTTON_1+1
+  44 0028 8130      		cpi r24,1
+  45 002a 9105      		cpc r25,__zero_reg__
+  46 002c 01F4      		brne .L5
+  47               	.LM6:
+  48 002e 82E0      		ldi r24,lo8(2)
+  49 0030 90E0      		ldi r25,hi8(2)
+  50 0032 00C0      		rjmp .L9
+  51               	.L5:
+  52               	.LM7:
+  53 0034 81E0      		ldi r24,lo8(1)
+  54 0036 90E0      		ldi r25,hi8(1)
+  55               	.L9:
+  56 0038 9093 0000 		sts BUTTON_1+1,r25
+  57 003c 8093 0000 		sts BUTTON_1,r24
+  58 0040 00C0      		rjmp .L4
+  59               	.L2:
+  60               	.LM8:
+  61 0042 1092 0000 		sts BUTTON_1_COUNTER+1,__zero_reg__
+  62 0046 1092 0000 		sts BUTTON_1_COUNTER,__zero_reg__
+  63               	.L4:
+  64               	.LM9:
+  65 004a 3199      		sbic 38-32,1
+  66 004c 00C0      		rjmp .L6
+  67               	.LM10:
+  68 004e 8091 0000 		lds r24,BUTTON_2_COUNTER
+  69 0052 9091 0000 		lds r25,BUTTON_2_COUNTER+1
+  70 0056 23E0      		ldi r18,hi8(1000)
+  71 0058 883E      		cpi r24,lo8(1000)
+  72 005a 9207      		cpc r25,r18
+  73 005c 04F4      		brge .L7
+  74               	.LM11:
+  75 005e 0196      		adiw r24,1
+  76 0060 9093 0000 		sts BUTTON_2_COUNTER+1,r25
+  77 0064 8093 0000 		sts BUTTON_2_COUNTER,r24
+  78 0068 0895      		ret
+  79               	.L7:
+  80               	.LM12:
+  81 006a 81E0      		ldi r24,lo8(1)
+  82 006c 90E0      		ldi r25,hi8(1)
+  83 006e 9093 0000 		sts BUTTON_2+1,r25
+  84 0072 8093 0000 		sts BUTTON_2,r24
+  85 0076 0895      		ret
+  86               	.L6:
+  87               	.LM13:
+  88 0078 1092 0000 		sts BUTTON_2+1,__zero_reg__
+  89 007c 1092 0000 		sts BUTTON_2,__zero_reg__
+  90               	.LM14:
+  91 0080 1092 0000 		sts BUTTON_2_COUNTER+1,__zero_reg__
+  92 0084 1092 0000 		sts BUTTON_2_COUNTER,__zero_reg__
+  93 0088 0895      		ret
+  94               	.LFE0:
+  96               	.global	BUTTON_1
+  97               	.global	BUTTON_1
+  98               		.section .bss
+ 101               	BUTTON_1:
+ 102 0000 0000      		.skip 2,0
+ 103               	.global	BUTTON_2
+ 104               	.global	BUTTON_2
+ 107               	BUTTON_2:
+ 108 0002 0000      		.skip 2,0
+ 109               	.global	BUTTON_1_COUNTER
+ 110               	.global	BUTTON_1_COUNTER
+ 113               	BUTTON_1_COUNTER:
+ 114 0004 0000      		.skip 2,0
+ 115               	.global	BUTTON_2_COUNTER
+ 116               	.global	BUTTON_2_COUNTER
+ 119               	BUTTON_2_COUNTER:
+ 120 0006 0000      		.skip 2,0
+ 145               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 button_input.c
+     /tmp/ccltpqfb.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccltpqfb.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccltpqfb.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccltpqfb.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccltpqfb.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccltpqfb.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccltpqfb.s:18     .text:00000000 read_button
+     /tmp/ccltpqfb.s:113    .bss:00000004 BUTTON_1_COUNTER
+     /tmp/ccltpqfb.s:101    .bss:00000000 BUTTON_1
+     /tmp/ccltpqfb.s:119    .bss:00000006 BUTTON_2_COUNTER
+     /tmp/ccltpqfb.s:107    .bss:00000002 BUTTON_2
+
+UNDEFINED SYMBOLS
+__do_clear_bss
