@@ -1,0 +1,589 @@
+   1               		.file	"sp_timers.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	Start_Timer0_RTC
+  18               	Start_Timer0_RTC:
+  19               	.LFB0:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	/* stack size = 0 */
+  24               	.L__stack_usage = 0
+  25               	.LM2:
+  26 0000 8091 0000 		lds r24,SvTimer0_SetupStatus
+  27 0004 8068      		ori r24,lo8(-128)
+  28 0006 8093 0000 		sts SvTimer0_SetupStatus,r24
+  29               	.LM3:
+  30 000a 84B5      		in r24,68-32
+  31 000c 8260      		ori r24,lo8(2)
+  32 000e 84BD      		out 68-32,r24
+  33               	.LM4:
+  34 0010 EEE6      		ldi r30,lo8(110)
+  35 0012 F0E0      		ldi r31,hi8(110)
+  36 0014 8081      		ld r24,Z
+  37 0016 8260      		ori r24,lo8(2)
+  38 0018 8083      		st Z,r24
+  39               	.LM5:
+  40 001a 89EF      		ldi r24,lo8(-7)
+  41 001c 87BD      		out 71-32,r24
+  42               	.LM6:
+  43 001e 85B5      		in r24,69-32
+  44 0020 8260      		ori r24,lo8(2)
+  45 0022 85BD      		out 69-32,r24
+  46               	/* epilogue start */
+  47               	.LM7:
+  48 0024 0895      		ret
+  49               	.LFE0:
+  51               	.global	Start_Timer2_RTC
+  53               	Start_Timer2_RTC:
+  54               	.LFB1:
+  55               	.LM8:
+  56               	/* prologue: function */
+  57               	/* frame size = 0 */
+  58               	/* stack size = 0 */
+  59               	.L__stack_usage = 0
+  60               	.LM9:
+  61 0026 8091 0000 		lds r24,SvTimer2_SetupStatus
+  62 002a 8068      		ori r24,lo8(-128)
+  63 002c 8093 0000 		sts SvTimer2_SetupStatus,r24
+  64               	.LM10:
+  65 0030 E0EB      		ldi r30,lo8(176)
+  66 0032 F0E0      		ldi r31,hi8(176)
+  67 0034 8081      		ld r24,Z
+  68 0036 8260      		ori r24,lo8(2)
+  69 0038 8083      		st Z,r24
+  70               	.LM11:
+  71 003a E0E7      		ldi r30,lo8(112)
+  72 003c F0E0      		ldi r31,hi8(112)
+  73 003e 8081      		ld r24,Z
+  74 0040 8260      		ori r24,lo8(2)
+  75 0042 8083      		st Z,r24
+  76               	.LM12:
+  77 0044 89EF      		ldi r24,lo8(-7)
+  78 0046 8093 B300 		sts 179,r24
+  79               	.LM13:
+  80 004a E1EB      		ldi r30,lo8(177)
+  81 004c F0E0      		ldi r31,hi8(177)
+  82 004e 8081      		ld r24,Z
+  83 0050 8260      		ori r24,lo8(2)
+  84 0052 8083      		st Z,r24
+  85               	/* epilogue start */
+  86               	.LM14:
+  87 0054 0895      		ret
+  88               	.LFE1:
+  90               	.global	Start_Timer0_CTC
+  92               	Start_Timer0_CTC:
+  93               	.LFB2:
+  94               	.LM15:
+  95               	.LVL0:
+  96               	/* prologue: function */
+  97               	/* frame size = 0 */
+  98               	/* stack size = 0 */
+  99               	.L__stack_usage = 0
+ 100               	.LM16:
+ 101 0056 94B5      		in r25,68-32
+ 102 0058 9260      		ori r25,lo8(2)
+ 103 005a 94BD      		out 68-32,r25
+ 104               	.LM17:
+ 105 005c 85FF      		sbrs r24,5
+ 106 005e 00C0      		rjmp .L4
+ 107               	.LM18:
+ 108 0060 9091 6E00 		lds r25,110
+ 109 0064 9260      		ori r25,lo8(2)
+ 110 0066 9093 6E00 		sts 110,r25
+ 111               	.LM19:
+ 112 006a 8F77      		andi r24,lo8(127)
+ 113               	.LVL1:
+ 114 006c 00C0      		rjmp .L5
+ 115               	.L4:
+ 116               	.LM20:
+ 117 006e 9091 6E00 		lds r25,110
+ 118 0072 9D7F      		andi r25,lo8(-3)
+ 119 0074 9093 6E00 		sts 110,r25
+ 120               	.L5:
+ 121               	.LM21:
+ 122 0078 67BD      		out 71-32,r22
+ 123               	.LM22:
+ 124 007a 282F      		mov r18,r24
+ 125 007c 84FF      		sbrs r24,4
+ 126 007e 00C0      		rjmp .L6
+ 127               	.LVL2:
+ 128               	.LM23:
+ 129 0080 9091 6E00 		lds r25,110
+ 130 0084 9460      		ori r25,lo8(4)
+ 131 0086 00C0      		rjmp .L9
+ 132               	.L6:
+ 133               	.LM24:
+ 134 0088 9091 6E00 		lds r25,110
+ 135 008c 9B7F      		andi r25,lo8(-5)
+ 136               	.L9:
+ 137 008e 9093 6E00 		sts 110,r25
+ 138               	.LM25:
+ 139 0092 48BD      		out 72-32,r20
+ 140               	.LM26:
+ 141 0094 23FD      		sbrc r18,3
+ 142 0096 00C0      		rjmp .L3
+ 143               	.LM27:
+ 144 0098 95B5      		in r25,69-32
+ 145 009a 987F      		andi r25,lo8(-8)
+ 146 009c 95BD      		out 69-32,r25
+ 147               	.LM28:
+ 148 009e 95B5      		in r25,69-32
+ 149 00a0 8770      		andi r24,lo8(7)
+ 150 00a2 892B      		or r24,r25
+ 151 00a4 85BD      		out 69-32,r24
+ 152               	.L3:
+ 153 00a6 0895      		ret
+ 154               	.LFE2:
+ 156               	.global	Start_Timer1_CTC
+ 158               	Start_Timer1_CTC:
+ 159               	.LFB3:
+ 160               	.LM29:
+ 161               	.LVL3:
+ 162               	/* prologue: function */
+ 163               	/* frame size = 0 */
+ 164               	/* stack size = 0 */
+ 165               	.L__stack_usage = 0
+ 166               	.LM30:
+ 167 00a8 9091 8100 		lds r25,129
+ 168 00ac 9860      		ori r25,lo8(8)
+ 169 00ae 9093 8100 		sts 129,r25
+ 170               	.LM31:
+ 171 00b2 982F      		mov r25,r24
+ 172 00b4 85FF      		sbrs r24,5
+ 173 00b6 00C0      		rjmp .L11
+ 174               	.LM32:
+ 175 00b8 2091 6F00 		lds r18,111
+ 176 00bc 2260      		ori r18,lo8(2)
+ 177 00be 00C0      		rjmp .L16
+ 178               	.L11:
+ 179               	.LM33:
+ 180 00c0 2091 6F00 		lds r18,111
+ 181 00c4 2D7F      		andi r18,lo8(-3)
+ 182               	.L16:
+ 183 00c6 2093 6F00 		sts 111,r18
+ 184               	.LM34:
+ 185 00ca 7093 8900 		sts 136+1,r23
+ 186 00ce 6093 8800 		sts 136,r22
+ 187               	.LM35:
+ 188 00d2 94FF      		sbrs r25,4
+ 189 00d4 00C0      		rjmp .L13
+ 190               	.LM36:
+ 191 00d6 2091 6F00 		lds r18,111
+ 192 00da 2460      		ori r18,lo8(4)
+ 193 00dc 00C0      		rjmp .L17
+ 194               	.L13:
+ 195               	.LM37:
+ 196 00de 2091 6F00 		lds r18,111
+ 197 00e2 2B7F      		andi r18,lo8(-5)
+ 198               	.L17:
+ 199 00e4 2093 6F00 		sts 111,r18
+ 200               	.LM38:
+ 201 00e8 5093 8B00 		sts 138+1,r21
+ 202 00ec 4093 8A00 		sts 138,r20
+ 203               	.LM39:
+ 204 00f0 93FD      		sbrc r25,3
+ 205 00f2 00C0      		rjmp .L10
+ 206               	.LM40:
+ 207 00f4 9091 8100 		lds r25,129
+ 208 00f8 987F      		andi r25,lo8(-8)
+ 209 00fa 9093 8100 		sts 129,r25
+ 210               	.LM41:
+ 211 00fe 9091 8100 		lds r25,129
+ 212 0102 8770      		andi r24,lo8(7)
+ 213               	.LVL4:
+ 214 0104 892B      		or r24,r25
+ 215 0106 8093 8100 		sts 129,r24
+ 216               	.L10:
+ 217 010a 0895      		ret
+ 218               	.LFE3:
+ 220               	.global	Start_Timer2_CTC
+ 222               	Start_Timer2_CTC:
+ 223               	.LFB4:
+ 224               	.LM42:
+ 225               	.LVL5:
+ 226               	/* prologue: function */
+ 227               	/* frame size = 0 */
+ 228               	/* stack size = 0 */
+ 229               	.L__stack_usage = 0
+ 230               	.LM43:
+ 231 010c 9091 B000 		lds r25,176
+ 232 0110 9260      		ori r25,lo8(2)
+ 233 0112 9093 B000 		sts 176,r25
+ 234               	.LM44:
+ 235 0116 85FF      		sbrs r24,5
+ 236 0118 00C0      		rjmp .L19
+ 237               	.LM45:
+ 238 011a 9091 7000 		lds r25,112
+ 239 011e 9260      		ori r25,lo8(2)
+ 240 0120 9093 7000 		sts 112,r25
+ 241               	.LM46:
+ 242 0124 8F77      		andi r24,lo8(127)
+ 243               	.LVL6:
+ 244 0126 00C0      		rjmp .L20
+ 245               	.L19:
+ 246               	.LM47:
+ 247 0128 9091 7000 		lds r25,112
+ 248 012c 9D7F      		andi r25,lo8(-3)
+ 249 012e 9093 7000 		sts 112,r25
+ 250               	.L20:
+ 251               	.LM48:
+ 252 0132 6093 B300 		sts 179,r22
+ 253               	.LM49:
+ 254 0136 282F      		mov r18,r24
+ 255 0138 84FF      		sbrs r24,4
+ 256 013a 00C0      		rjmp .L21
+ 257               	.LVL7:
+ 258               	.LM50:
+ 259 013c 9091 7000 		lds r25,112
+ 260 0140 9460      		ori r25,lo8(4)
+ 261 0142 00C0      		rjmp .L24
+ 262               	.L21:
+ 263               	.LM51:
+ 264 0144 9091 7000 		lds r25,112
+ 265 0148 9B7F      		andi r25,lo8(-5)
+ 266               	.L24:
+ 267 014a 9093 7000 		sts 112,r25
+ 268               	.LM52:
+ 269 014e 4093 B400 		sts 180,r20
+ 270               	.LM53:
+ 271 0152 23FD      		sbrc r18,3
+ 272 0154 00C0      		rjmp .L18
+ 273               	.LM54:
+ 274 0156 9091 B100 		lds r25,177
+ 275 015a 987F      		andi r25,lo8(-8)
+ 276 015c 9093 B100 		sts 177,r25
+ 277               	.LM55:
+ 278 0160 9091 B100 		lds r25,177
+ 279 0164 8770      		andi r24,lo8(7)
+ 280 0166 892B      		or r24,r25
+ 281 0168 8093 B100 		sts 177,r24
+ 282               	.L18:
+ 283 016c 0895      		ret
+ 284               	.LFE4:
+ 286               	.global	Timer0_Reset_to_Startup
+ 288               	Timer0_Reset_to_Startup:
+ 289               	.LFB5:
+ 290               	.LM56:
+ 291               	/* prologue: function */
+ 292               	/* frame size = 0 */
+ 293               	/* stack size = 0 */
+ 294               	.L__stack_usage = 0
+ 295               	.LM57:
+ 296 016e 1092 0000 		sts SvTimer0_SetupStatus,__zero_reg__
+ 297               	.LM58:
+ 298 0172 14BC      		out 68-32,__zero_reg__
+ 299               	.LM59:
+ 300 0174 15BC      		out 69-32,__zero_reg__
+ 301               	.LM60:
+ 302 0176 17BC      		out 71-32,__zero_reg__
+ 303               	.LM61:
+ 304 0178 18BC      		out 72-32,__zero_reg__
+ 305               	.LM62:
+ 306 017a 1092 6E00 		sts 110,__zero_reg__
+ 307               	/* epilogue start */
+ 308               	.LM63:
+ 309 017e 0895      		ret
+ 310               	.LFE5:
+ 312               	.global	Timer1_Reset_to_Startup
+ 314               	Timer1_Reset_to_Startup:
+ 315               	.LFB6:
+ 316               	.LM64:
+ 317               	/* prologue: function */
+ 318               	/* frame size = 0 */
+ 319               	/* stack size = 0 */
+ 320               	.L__stack_usage = 0
+ 321               	.LM65:
+ 322 0180 1092 8000 		sts 128,__zero_reg__
+ 323               	.LM66:
+ 324 0184 1092 8100 		sts 129,__zero_reg__
+ 325               	.LM67:
+ 326 0188 1092 8200 		sts 130,__zero_reg__
+ 327               	.LM68:
+ 328 018c 1092 8900 		sts 136+1,__zero_reg__
+ 329 0190 1092 8800 		sts 136,__zero_reg__
+ 330               	.LM69:
+ 331 0194 1092 8B00 		sts 138+1,__zero_reg__
+ 332 0198 1092 8A00 		sts 138,__zero_reg__
+ 333               	.LM70:
+ 334 019c 1092 6F00 		sts 111,__zero_reg__
+ 335               	/* epilogue start */
+ 336               	.LM71:
+ 337 01a0 0895      		ret
+ 338               	.LFE6:
+ 340               	.global	Timer2_Reset_to_Startup
+ 342               	Timer2_Reset_to_Startup:
+ 343               	.LFB7:
+ 344               	.LM72:
+ 345               	/* prologue: function */
+ 346               	/* frame size = 0 */
+ 347               	/* stack size = 0 */
+ 348               	.L__stack_usage = 0
+ 349               	.LM73:
+ 350 01a2 1092 0000 		sts SvTimer2_SetupStatus,__zero_reg__
+ 351               	.LM74:
+ 352 01a6 1092 B000 		sts 176,__zero_reg__
+ 353               	.LM75:
+ 354 01aa 1092 B100 		sts 177,__zero_reg__
+ 355               	.LM76:
+ 356 01ae 1092 B300 		sts 179,__zero_reg__
+ 357               	.LM77:
+ 358 01b2 1092 B400 		sts 180,__zero_reg__
+ 359               	.LM78:
+ 360 01b6 1092 7000 		sts 112,__zero_reg__
+ 361               	/* epilogue start */
+ 362               	.LM79:
+ 363 01ba 0895      		ret
+ 364               	.LFE7:
+ 366               	.global	__vector_14
+ 368               	__vector_14:
+ 369               	.LFB8:
+ 370               	.LM80:
+ 371 01bc 1F92      		push __zero_reg__
+ 372 01be 0F92      		push r0
+ 373 01c0 0FB6      		in r0,__SREG__
+ 374 01c2 0F92      		push r0
+ 375 01c4 1124      		clr __zero_reg__
+ 376 01c6 2F93      		push r18
+ 377 01c8 8F93      		push r24
+ 378 01ca 9F93      		push r25
+ 379               	/* prologue: Signal */
+ 380               	/* frame size = 0 */
+ 381               	/* stack size = 6 */
+ 382               	.L__stack_usage = 6
+ 383               	.LM81:
+ 384 01cc 8091 0000 		lds r24,SvTimer0_SetupStatus
+ 385 01d0 87FF      		sbrs r24,7
+ 386 01d2 00C0      		rjmp .L28
+ 387               	.LM82:
+ 388 01d4 8091 0000 		lds r24,SvTenThousandths
+ 389 01d8 8F5F      		subi r24,lo8(-(1))
+ 390 01da 8093 0000 		sts SvTenThousandths,r24
+ 391               	.LM83:
+ 392 01de 8091 0000 		lds r24,SvTenThousandths
+ 393 01e2 8436      		cpi r24,lo8(100)
+ 394 01e4 00F0      		brlo .L28
+ 395               	.LM84:
+ 396 01e6 1092 0000 		sts SvTenThousandths,__zero_reg__
+ 397               	.LM85:
+ 398 01ea 8091 0000 		lds r24,SvHundredths
+ 399 01ee 8F5F      		subi r24,lo8(-(1))
+ 400 01f0 8093 0000 		sts SvHundredths,r24
+ 401               	.LM86:
+ 402 01f4 8091 0000 		lds r24,SvHundredths
+ 403 01f8 8436      		cpi r24,lo8(100)
+ 404 01fa 00F0      		brlo .L28
+ 405               	.LM87:
+ 406 01fc 1092 0000 		sts SvHundredths,__zero_reg__
+ 407               	.LM88:
+ 408 0200 8091 0000 		lds r24,SvSeconds
+ 409 0204 9091 0000 		lds r25,SvSeconds+1
+ 410 0208 0196      		adiw r24,1
+ 411 020a 9093 0000 		sts SvSeconds+1,r25
+ 412 020e 8093 0000 		sts SvSeconds,r24
+ 413               	.LM89:
+ 414 0212 8091 0000 		lds r24,SvSeconds
+ 415 0216 9091 0000 		lds r25,SvSeconds+1
+ 416 021a 28EA      		ldi r18,hi8(-22336)
+ 417 021c 803C      		cpi r24,lo8(-22336)
+ 418 021e 9207      		cpc r25,r18
+ 419 0220 00F0      		brlo .L28
+ 420               	.LM90:
+ 421 0222 1092 0000 		sts SvSeconds+1,__zero_reg__
+ 422 0226 1092 0000 		sts SvSeconds,__zero_reg__
+ 423               	.LM91:
+ 424 022a 8091 0000 		lds r24,SvHalfDays
+ 425 022e 9091 0000 		lds r25,SvHalfDays+1
+ 426 0232 0196      		adiw r24,1
+ 427 0234 9093 0000 		sts SvHalfDays+1,r25
+ 428 0238 8093 0000 		sts SvHalfDays,r24
+ 429               	.L28:
+ 430               	/* epilogue start */
+ 431               	.LM92:
+ 432 023c 9F91      		pop r25
+ 433 023e 8F91      		pop r24
+ 434 0240 2F91      		pop r18
+ 435 0242 0F90      		pop r0
+ 436 0244 0FBE      		out __SREG__,r0
+ 437 0246 0F90      		pop r0
+ 438 0248 1F90      		pop __zero_reg__
+ 439 024a 1895      		reti
+ 440               	.LFE8:
+ 442               	.global	__vector_7
+ 444               	__vector_7:
+ 445               	.LFB9:
+ 446               	.LM93:
+ 447 024c 1F92      		push __zero_reg__
+ 448 024e 0F92      		push r0
+ 449 0250 0FB6      		in r0,__SREG__
+ 450 0252 0F92      		push r0
+ 451 0254 1124      		clr __zero_reg__
+ 452 0256 2F93      		push r18
+ 453 0258 8F93      		push r24
+ 454 025a 9F93      		push r25
+ 455               	/* prologue: Signal */
+ 456               	/* frame size = 0 */
+ 457               	/* stack size = 6 */
+ 458               	.L__stack_usage = 6
+ 459               	.LM94:
+ 460 025c 8091 0000 		lds r24,SvTimer2_SetupStatus
+ 461 0260 87FF      		sbrs r24,7
+ 462 0262 00C0      		rjmp .L30
+ 463               	.LM95:
+ 464 0264 8091 0000 		lds r24,SvTenThousandths
+ 465 0268 8F5F      		subi r24,lo8(-(1))
+ 466 026a 8093 0000 		sts SvTenThousandths,r24
+ 467               	.LM96:
+ 468 026e 8091 0000 		lds r24,SvDisplayTime
+ 469 0272 8F5F      		subi r24,lo8(-(1))
+ 470 0274 8093 0000 		sts SvDisplayTime,r24
+ 471               	.LM97:
+ 472 0278 8091 0000 		lds r24,SvTenThousandths
+ 473 027c 8436      		cpi r24,lo8(100)
+ 474 027e 00F0      		brlo .L30
+ 475               	.LM98:
+ 476 0280 1092 0000 		sts SvTenThousandths,__zero_reg__
+ 477               	.LM99:
+ 478 0284 8091 0000 		lds r24,SvHundredths
+ 479 0288 8F5F      		subi r24,lo8(-(1))
+ 480 028a 8093 0000 		sts SvHundredths,r24
+ 481               	.LM100:
+ 482 028e 8091 0000 		lds r24,SvHundredths
+ 483 0292 8436      		cpi r24,lo8(100)
+ 484 0294 00F0      		brlo .L30
+ 485               	.LM101:
+ 486 0296 1092 0000 		sts SvHundredths,__zero_reg__
+ 487               	.LM102:
+ 488 029a 8091 0000 		lds r24,SvSeconds
+ 489 029e 9091 0000 		lds r25,SvSeconds+1
+ 490 02a2 0196      		adiw r24,1
+ 491 02a4 9093 0000 		sts SvSeconds+1,r25
+ 492 02a8 8093 0000 		sts SvSeconds,r24
+ 493               	.LM103:
+ 494 02ac 8091 0000 		lds r24,SvSeconds
+ 495 02b0 9091 0000 		lds r25,SvSeconds+1
+ 496 02b4 28EA      		ldi r18,hi8(-22336)
+ 497 02b6 803C      		cpi r24,lo8(-22336)
+ 498 02b8 9207      		cpc r25,r18
+ 499 02ba 00F0      		brlo .L30
+ 500               	.LM104:
+ 501 02bc 1092 0000 		sts SvSeconds+1,__zero_reg__
+ 502 02c0 1092 0000 		sts SvSeconds,__zero_reg__
+ 503               	.LM105:
+ 504 02c4 8091 0000 		lds r24,SvHalfDays
+ 505 02c8 9091 0000 		lds r25,SvHalfDays+1
+ 506 02cc 0196      		adiw r24,1
+ 507 02ce 9093 0000 		sts SvHalfDays+1,r25
+ 508 02d2 8093 0000 		sts SvHalfDays,r24
+ 509               	.L30:
+ 510               	/* epilogue start */
+ 511               	.LM106:
+ 512 02d6 9F91      		pop r25
+ 513 02d8 8F91      		pop r24
+ 514 02da 2F91      		pop r18
+ 515 02dc 0F90      		pop r0
+ 516 02de 0FBE      		out __SREG__,r0
+ 517 02e0 0F90      		pop r0
+ 518 02e2 1F90      		pop __zero_reg__
+ 519 02e4 1895      		reti
+ 520               	.LFE9:
+ 522               	.global	SvTimer0_CompA
+ 523               	.global	SvTimer0_CompA
+ 524               		.section .bss
+ 527               	SvTimer0_CompA:
+ 528 0000 00        		.skip 1,0
+ 529               	.global	SvTimer0_CompB
+ 530               	.global	SvTimer0_CompB
+ 533               	SvTimer0_CompB:
+ 534 0001 00        		.skip 1,0
+ 535               	.global	SvTimer0_SetupStatus
+ 536               	.global	SvTimer0_SetupStatus
+ 539               	SvTimer0_SetupStatus:
+ 540 0002 00        		.skip 1,0
+ 541               	.global	SvTimer1_CompA
+ 542               	.global	SvTimer1_CompA
+ 545               	SvTimer1_CompA:
+ 546 0003 0000      		.skip 2,0
+ 547               	.global	SvTimer1_CompB
+ 548               	.global	SvTimer1_CompB
+ 551               	SvTimer1_CompB:
+ 552 0005 0000      		.skip 2,0
+ 553               	.global	SvTimer1_SetupStatus
+ 554               	.global	SvTimer1_SetupStatus
+ 557               	SvTimer1_SetupStatus:
+ 558 0007 00        		.skip 1,0
+ 559               	.global	SvTimer2_CompA
+ 560               	.global	SvTimer2_CompA
+ 563               	SvTimer2_CompA:
+ 564 0008 00        		.skip 1,0
+ 565               	.global	SvTimer2_CompB
+ 566               	.global	SvTimer2_CompB
+ 569               	SvTimer2_CompB:
+ 570 0009 00        		.skip 1,0
+ 571               	.global	SvTimer2_SetupStatus
+ 572               	.global	SvTimer2_SetupStatus
+ 575               	SvTimer2_SetupStatus:
+ 576 000a 00        		.skip 1,0
+ 577               	.global	SvTenThousandths
+ 578               	.global	SvTenThousandths
+ 581               	SvTenThousandths:
+ 582 000b 00        		.skip 1,0
+ 583               	.global	SvHundredths
+ 584               	.global	SvHundredths
+ 587               	SvHundredths:
+ 588 000c 00        		.skip 1,0
+ 589               	.global	SvSeconds
+ 590               	.global	SvSeconds
+ 593               	SvSeconds:
+ 594 000d 0000      		.skip 2,0
+ 595               	.global	SvHalfDays
+ 596               		.data
+ 599               	SvHalfDays:
+ 600 0000 3023      		.word	9008
+ 601               	.global	SvDisplayTime
+ 602               	.global	SvDisplayTime
+ 603               		.section .bss
+ 606               	SvDisplayTime:
+ 607 000f 00        		.skip 1,0
+ 704               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 sp_timers.c
+     /tmp/ccrnW4pR.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccrnW4pR.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccrnW4pR.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccrnW4pR.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccrnW4pR.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccrnW4pR.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccrnW4pR.s:18     .text:00000000 Start_Timer0_RTC
+     /tmp/ccrnW4pR.s:539    .bss:00000002 SvTimer0_SetupStatus
+     /tmp/ccrnW4pR.s:53     .text:00000026 Start_Timer2_RTC
+     /tmp/ccrnW4pR.s:575    .bss:0000000a SvTimer2_SetupStatus
+     /tmp/ccrnW4pR.s:92     .text:00000056 Start_Timer0_CTC
+     /tmp/ccrnW4pR.s:158    .text:000000a8 Start_Timer1_CTC
+     /tmp/ccrnW4pR.s:222    .text:0000010c Start_Timer2_CTC
+     /tmp/ccrnW4pR.s:288    .text:0000016e Timer0_Reset_to_Startup
+     /tmp/ccrnW4pR.s:314    .text:00000180 Timer1_Reset_to_Startup
+     /tmp/ccrnW4pR.s:342    .text:000001a2 Timer2_Reset_to_Startup
+     /tmp/ccrnW4pR.s:368    .text:000001bc __vector_14
+     /tmp/ccrnW4pR.s:581    .bss:0000000b SvTenThousandths
+     /tmp/ccrnW4pR.s:587    .bss:0000000c SvHundredths
+     /tmp/ccrnW4pR.s:593    .bss:0000000d SvSeconds
+     /tmp/ccrnW4pR.s:599    .data:00000000 SvHalfDays
+     /tmp/ccrnW4pR.s:444    .text:0000024c __vector_7
+     /tmp/ccrnW4pR.s:606    .bss:0000000f SvDisplayTime
+     /tmp/ccrnW4pR.s:527    .bss:00000000 SvTimer0_CompA
+     /tmp/ccrnW4pR.s:533    .bss:00000001 SvTimer0_CompB
+     /tmp/ccrnW4pR.s:545    .bss:00000003 SvTimer1_CompA
+     /tmp/ccrnW4pR.s:551    .bss:00000005 SvTimer1_CompB
+     /tmp/ccrnW4pR.s:557    .bss:00000007 SvTimer1_SetupStatus
+     /tmp/ccrnW4pR.s:563    .bss:00000008 SvTimer2_CompA
+     /tmp/ccrnW4pR.s:569    .bss:00000009 SvTimer2_CompB
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

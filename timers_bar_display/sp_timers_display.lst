@@ -1,0 +1,260 @@
+   1               		.file	"sp_timers_display.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	main
+  18               	main:
+  19               	.LFB0:
+  20               	.LM1:
+  21 0000 0F93      		push r16
+  22 0002 1F93      		push r17
+  23 0004 CF93      		push r28
+  24 0006 DF93      		push r29
+  25               	/* prologue: function */
+  26               	/* frame size = 0 */
+  27               	/* stack size = 4 */
+  28               	.L__stack_usage = 4
+  29               	.LM2:
+  30 0008 1092 0000 		sts SvBDValue+1,__zero_reg__
+  31 000c 1092 0000 		sts SvBDValue,__zero_reg__
+  32               	.LM3:
+  33 0010 1092 0000 		sts SvBDRow,__zero_reg__
+  34               	.LM4:
+  35 0014 1092 0000 		sts SvPattern,__zero_reg__
+  36               	.LM5:
+  37 0018 1092 0000 		sts SvPatternCount,__zero_reg__
+  38               	.LM6:
+  39 001c 8091 0000 		lds r24,SvSeconds
+  40 0020 9091 0000 		lds r25,SvSeconds+1
+  41 0024 9093 0000 		sts SvPatternSecs+1,r25
+  42 0028 8093 0000 		sts SvPatternSecs,r24
+  43               	.LM7:
+  44 002c 8091 0000 		lds r24,SvSeconds
+  45 0030 9091 0000 		lds r25,SvSeconds+1
+  46 0034 9093 0000 		sts SvTempSecs+1,r25
+  47 0038 8093 0000 		sts SvTempSecs,r24
+  48               	.LM8:
+  49 003c 8091 0000 		lds r24,SvHundredths
+  50 0040 8093 0000 		sts SvTempHuns,r24
+  51               	.LM9:
+  52 0044 1092 0000 		sts SvTempCount,__zero_reg__
+  53               	.LM10:
+  54 0048 1092 0000 		sts SvTempDirection,__zero_reg__
+  55               	.LM11:
+  56 004c 1092 0000 		sts SvTempCount2,__zero_reg__
+  57               	.LM12:
+  58               	/* #APP */
+  59               	 ;  25 "sp_timers_display.c" 1
+  60 0050 7894      		sei
+  61               	 ;  0 "" 2
+  62               	.LM13:
+  63               	/* #NOAPP */
+  64 0052 0E94 0000 		call Start_Timer2_RTC
+  65               	.LM14:
+  66 0056 0E94 0000 		call Sf_Port_IO_init
+  67               	.LM15:
+  68 005a C1E0      		ldi r28,lo8(1)
+  69 005c D0E0      		ldi r29,hi8(1)
+  70               	.L12:
+  71               	.LM16:
+  72 005e 4091 0000 		lds r20,SvPatternSecs
+  73 0062 5091 0000 		lds r21,SvPatternSecs+1
+  74 0066 A091 0000 		lds r26,SvPatternCount
+  75 006a F091 0000 		lds r31,SvPattern
+  76 006e 8091 0000 		lds r24,SvBDValue
+  77 0072 9091 0000 		lds r25,SvBDValue+1
+  78 0076 2091 0000 		lds r18,SvTempSecs
+  79 007a 3091 0000 		lds r19,SvTempSecs+1
+  80 007e 0091 0000 		lds r16,SvTempHuns
+  81 0082 B091 0000 		lds r27,SvTempCount
+  82 0086 1091 0000 		lds r17,SvTempDirection
+  83 008a E091 0000 		lds r30,SvTempCount2
+  84               	.L10:
+  85               	.LM17:
+  86 008e 6091 0000 		lds r22,SvSeconds
+  87 0092 7091 0000 		lds r23,SvSeconds+1
+  88 0096 4617      		cp r20,r22
+  89 0098 5707      		cpc r21,r23
+  90 009a 01F0      		breq .L2
+  91               	.LM18:
+  92 009c 4091 0000 		lds r20,SvSeconds
+  93 00a0 5091 0000 		lds r21,SvSeconds+1
+  94               	.LM19:
+  95 00a4 AF5F      		subi r26,lo8(-(1))
+  96               	.L2:
+  97               	.LM20:
+  98 00a6 AA30      		cpi r26,lo8(10)
+  99 00a8 00F0      		brlo .L3
+ 100               	.LM21:
+ 101 00aa FF5F      		subi r31,lo8(-(1))
+ 102               	.LM22:
+ 103 00ac F230      		cpi r31,lo8(2)
+ 104 00ae 00F0      		brlo .L13
+ 105               	.LM23:
+ 106 00b0 80E0      		ldi r24,lo8(0)
+ 107 00b2 90E0      		ldi r25,hi8(0)
+ 108               	.LM24:
+ 109 00b4 F0E0      		ldi r31,lo8(0)
+ 110               	.LM25:
+ 111 00b6 A0E0      		ldi r26,lo8(0)
+ 112 00b8 00C0      		rjmp .L15
+ 113               	.L13:
+ 114               	.LM26:
+ 115 00ba 80E0      		ldi r24,lo8(0)
+ 116 00bc 90E0      		ldi r25,hi8(0)
+ 117               	.LM27:
+ 118 00be A0E0      		ldi r26,lo8(0)
+ 119               	.L3:
+ 120               	.LM28:
+ 121 00c0 FF23      		tst r31
+ 122 00c2 01F4      		brne .L4
+ 123               	.L15:
+ 124               	.LM29:
+ 125 00c4 6091 0000 		lds r22,SvSeconds
+ 126 00c8 7091 0000 		lds r23,SvSeconds+1
+ 127 00cc 2617      		cp r18,r22
+ 128 00ce 3707      		cpc r19,r23
+ 129 00d0 01F0      		breq .L6
+ 130               	.LM30:
+ 131 00d2 2091 0000 		lds r18,SvSeconds
+ 132 00d6 3091 0000 		lds r19,SvSeconds+1
+ 133               	.LM31:
+ 134 00da 8091 0000 		lds r24,SvSeconds
+ 135 00de 9091 0000 		lds r25,SvSeconds+1
+ 136 00e2 9370      		andi r25,hi8(1023)
+ 137 00e4 00C0      		rjmp .L6
+ 138               	.L4:
+ 139               	.LM32:
+ 140 00e6 F130      		cpi r31,lo8(1)
+ 141 00e8 01F4      		brne .L6
+ 142               	.LM33:
+ 143 00ea 6091 0000 		lds r22,SvHundredths
+ 144 00ee 0617      		cp r16,r22
+ 145 00f0 01F0      		breq .L7
+ 146               	.LM34:
+ 147 00f2 0091 0000 		lds r16,SvHundredths
+ 148               	.LM35:
+ 149 00f6 BF5F      		subi r27,lo8(-(1))
+ 150               	.L7:
+ 151               	.LM36:
+ 152 00f8 BA30      		cpi r27,lo8(10)
+ 153 00fa 00F0      		brlo .L6
+ 154               	.LM37:
+ 155 00fc 1123      		tst r17
+ 156 00fe 01F4      		brne .L8
+ 157               	.LM38:
+ 158 0100 EF5F      		subi r30,lo8(-(1))
+ 159               	.LM39:
+ 160 0102 EA30      		cpi r30,lo8(10)
+ 161 0104 00F0      		brlo .L9
+ 162               	.LM40:
+ 163 0106 E8E0      		ldi r30,lo8(8)
+ 164               	.LM41:
+ 165 0108 11E0      		ldi r17,lo8(1)
+ 166 010a 00C0      		rjmp .L9
+ 167               	.L8:
+ 168               	.LM42:
+ 169 010c E150      		subi r30,1
+ 170 010e 00F4      		brcc .L9
+ 171               	.LM43:
+ 172 0110 E1E0      		ldi r30,lo8(1)
+ 173               	.LM44:
+ 174 0112 10E0      		ldi r17,lo8(0)
+ 175               	.L9:
+ 176               	.LM45:
+ 177 0114 CE01      		movw r24,r28
+ 178 0116 0E2E      		mov r0,r30
+ 179 0118 00C0      		rjmp 2f
+ 180 011a 880F      	1:	lsl r24
+ 181 011c 991F      		rol r25
+ 182 011e 0A94      	2:	dec r0
+ 183 0120 02F4      		brpl 1b
+ 184               	.LM46:
+ 185 0122 B0E0      		ldi r27,lo8(0)
+ 186               	.L6:
+ 187               	.LM47:
+ 188 0124 6091 0000 		lds r22,SvDisplayTime
+ 189 0128 6A31      		cpi r22,lo8(26)
+ 190 012a 00F4      		brsh .+2
+ 191 012c 00C0      		rjmp .L10
+ 192 012e 5093 0000 		sts SvPatternSecs+1,r21
+ 193 0132 4093 0000 		sts SvPatternSecs,r20
+ 194 0136 A093 0000 		sts SvPatternCount,r26
+ 195 013a F093 0000 		sts SvPattern,r31
+ 196 013e 9093 0000 		sts SvBDValue+1,r25
+ 197 0142 8093 0000 		sts SvBDValue,r24
+ 198 0146 3093 0000 		sts SvTempSecs+1,r19
+ 199 014a 2093 0000 		sts SvTempSecs,r18
+ 200 014e 0093 0000 		sts SvTempHuns,r16
+ 201 0152 B093 0000 		sts SvTempCount,r27
+ 202 0156 1093 0000 		sts SvTempDirection,r17
+ 203 015a E093 0000 		sts SvTempCount2,r30
+ 204               	.LM48:
+ 205 015e 8091 0000 		lds r24,SvDisplayTime
+ 206               	.LVL0:
+ 207 0162 8951      		subi r24,lo8(-(-25))
+ 208               	.LVL1:
+ 209 0164 8093 0000 		sts SvDisplayTime,r24
+ 210               	.LVL2:
+ 211               	.LM49:
+ 212 0168 8091 0000 		lds r24,SvBDRow
+ 213               	.LVL3:
+ 214 016c 8330      		cpi r24,lo8(3)
+ 215 016e 00F0      		brlo .L11
+ 216               	.LM50:
+ 217 0170 1092 0000 		sts SvBDRow,__zero_reg__
+ 218               	.L11:
+ 219               	.LM51:
+ 220 0174 8091 0000 		lds r24,SvBDValue
+ 221 0178 9091 0000 		lds r25,SvBDValue+1
+ 222 017c 6091 0000 		lds r22,SvBDRow
+ 223 0180 0E94 0000 		call Sf_Bar_Display
+ 224               	.LM52:
+ 225 0184 8091 0000 		lds r24,SvBDRow
+ 226 0188 8F5F      		subi r24,lo8(-(1))
+ 227 018a 8093 0000 		sts SvBDRow,r24
+ 228 018e 00C0      		rjmp .L12
+ 229               	.LFE0:
+ 231               		.comm SvBDRow,1,1
+ 232               		.comm SvBDValue,2,1
+ 233               		.comm SvTempSecs,2,1
+ 234               		.comm SvPatternSecs,2,1
+ 235               		.comm SvPattern,1,1
+ 236               		.comm SvPatternCount,1,1
+ 237               		.comm SvTempHuns,1,1
+ 238               		.comm SvTempCount,1,1
+ 239               		.comm SvTempDirection,1,1
+ 240               		.comm SvTempCount2,1,1
+ 265               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 sp_timers_display.c
+     /tmp/cc8cdtuc.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc8cdtuc.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc8cdtuc.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc8cdtuc.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc8cdtuc.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc8cdtuc.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc8cdtuc.s:18     .text:00000000 main
+                            *COM*:00000002 SvBDValue
+                            *COM*:00000001 SvBDRow
+                            *COM*:00000001 SvPattern
+                            *COM*:00000001 SvPatternCount
+                            *COM*:00000002 SvPatternSecs
+                            *COM*:00000002 SvTempSecs
+                            *COM*:00000001 SvTempHuns
+                            *COM*:00000001 SvTempCount
+                            *COM*:00000001 SvTempDirection
+                            *COM*:00000001 SvTempCount2
+
+UNDEFINED SYMBOLS
+SvSeconds
+SvHundredths
+Start_Timer2_RTC
+Sf_Port_IO_init
+SvDisplayTime
+Sf_Bar_Display
+__do_clear_bss
