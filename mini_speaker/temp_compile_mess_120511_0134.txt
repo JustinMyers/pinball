@@ -1,0 +1,26 @@
+sp_mini_speaker.c:52: warning: data definition has no type or storage class
+sp_mini_speaker.c:52: warning: type defaults to ‘int’ in declaration of ‘SvNumberOfNotesToPlay’
+sp_mini_speaker.c:52: error: conflicting types for ‘SvNumberOfNotesToPlay’
+sp_mini_speaker.c:51: error: previous declaration of ‘SvNumberOfNotesToPlay’ was here
+sp_mini_speaker.c:54: error: variably modified ‘SvNotesToPlay’ at file scope
+sp_mini_speaker.c: In function ‘main’:
+sp_mini_speaker.c:66: error: expected expression before ‘]’ token
+sp_mini_speaker.c:67: error: expected expression before ‘]’ token
+sp_mini_speaker.c:68: error: expected expression before ‘]’ token
+sp_mini_speaker.c:69: error: expected expression before ‘]’ token
+sp_mini_speaker.c:70: error: expected expression before ‘]’ token
+sp_mini_speaker.c:71: error: expected expression before ‘]’ token
+sp_mini_speaker.c:108: warning: suggest parentheses around assignment used as truth value
+sp_mini_speaker.c:109: error: ‘SvNoteStructNum’ undeclared (first use in this function)
+sp_mini_speaker.c:109: error: (Each undeclared identifier is reported only once
+sp_mini_speaker.c:109: error: for each function it appears in.)
+sp_mini_speaker.c:110: error: ‘SvNoteCStructNum’ undeclared (first use in this function)
+sp_mini_speaker.c: In function ‘SfToneGenerator’:
+sp_mini_speaker.c:145: error: expected expression before ‘/’ token
+sp_mini_speaker.c: In function ‘__vector_16’:
+sp_mini_speaker.c:172: error: expected ‘)’ before ‘{’ token
+sp_mini_speaker.c:180: error: expected expression before ‘}’ token
+sp_mini_speaker.c:183: error: invalid operands to binary << (have ‘int’ and ‘volatile uint8_t *’)
+sp_mini_speaker.c:191: error: expected ‘)’ before ‘{’ token
+sp_mini_speaker.c:199: error: expected expression before ‘}’ token
+make: *** [sp_mini_speaker.o] Error 1
