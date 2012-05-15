@@ -26,7 +26,7 @@ volatile uint8_t SvArrayElements[] = { 255, 255 };
 
 // SvNoteHighNOTLow[] - for ISR, indicates which method of counting cycles to use.
 // Low notes (notes 0-47) count through SvPlayArray[] by binary multiples(?) of 78K cycles.  wait multiple (1 << SvNoteFactor) 78K cycles per array element.
-// base octave, octave 0, notes 48-59, setp through the 1 sine wave cycle in  SvPlayArray[], 1 step per 78K cycle.
+// base octave, octave 0, notes 48-59, step through the 1 sine wave cycle in  SvPlayArray[], 1 step per 78K cycle.
 // High notes (notes 48-121) move to the next element of SvPlayArray[] each 78K cycle.  SvPlayArray[] contains multiple (1 << SvNoteFactor) sine wave cycles.
 // notes 0-11, SvNoteHighNOTLow[] = 0, SvNoteFactor[] = 
 volatile uint8_t SvNoteHighNOTLow[] = { 1, 1 };  // just a binary value
@@ -34,7 +34,6 @@ volatile uint8_t SvNoteFactor[] = { 0, 0 };   // indicates how many octaves the 
 
 volatile uint8_t SvArrNoteDuration[] = { 31, 31 };  // numbered in SvDurationResolution units (the fractional note durations of BPM), counting from 0 to total counts, up to 255
 volatile uint16_t SvDurationResolution[] = { 304, 304 };  // start counting from 0.  number of 78K cycles for in the minimum fractional note duration
-
 volatile uint8_t SvLiveArr;  // binary value, selects which SvPlayArray[] is currently being "played"
 volatile uint8_t SvNextLiveArr;  // binary value, selects which SvPlayArray[] is next
 volatile uint8_t SvNextPWMValue;
@@ -69,16 +68,8 @@ int main (void) {
 	// this minimum can be increased up to 512 "78K cycles", to work out various BPM settings.
 	// beginning example 120 BPM with 128th notes.  1/256 of a second minimum note duration, this is 305 "78K cycles".
 	SvMusicTempoBPMxSub = 120 * 64;  // beats per minute times the number of fractional note durations, if using a faster BPM than 120, use less than 128th fractional note durations
-	
-	// TEST
-	//SvDurationResolution[0] = 511;
-	//SvDurationResolution[1] = 511;
-	// END TEST
-	//SvDurationResolution = 2441;  // temp test for math, 2441 is 32 per second ( 78,125 PWM cycles-per-second * 60 seconds ) / (120BPM * 16) for 16th notes resolution
-	//SvDurationResolution = 305;  // temp test for math, 305 is 256 per second ( 78,125 PWM cycles-per-second * 60 seconds ) / (120 BPM * 128) for 128th notes resolution
 	SvDurationResolution[0] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub ) - 1 ;  // number of PWM duty cycles in a minute is 4,687,500 = 78,125 * 60
 	SvDurationResolution[1] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub ) - 1 ;  // number of PWM duty cycles in a minute is 4,687,500 = 78,125 * 60
-	
 	
 	SvNumberOfNotesToPlay = 7;  // start counting from 0 here
 	
@@ -119,11 +110,9 @@ int main (void) {
 	SfToneGenerator(SvNotesToPlay[0]);  // fill the SvPlayArray[0] with useful data
 	SvLiveArr = 0;
 	SvNextLiveArr = 1;
-	
 	SvNoteStructNum = 1;
 	SvResetGoToNextNote = 0;
 	SvStartCalculatingNextNote = 1;
-	
 	SvNextPWMValue = 127;
 	SvArrayLiveCounter = 0;
 	SvFactor78KCounter = 0;
@@ -179,7 +168,6 @@ void SfToneGenerator (struct NoteStruct SvNoteForPlayArray) {
 			temp3 = SvArrayCount << SvNoteFactor[SvNextLiveArr];  // temp3 is 16 bit, need 16 bit result
 			temp4 = ( temp3 / ( SvArrayElements[SvNextLiveArr] + 1 ) ) << ( 8 - SvNoteFactor[SvNextLiveArr] );  // temp4 is intermediate result to make the equation shorter
 			SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (temp2 - temp4) << SvNoteFactor[SvNextLiveArr] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
-			//SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (((SvArrayCount << 8) / SvArrayElements[SvNextLiveArr]) - (((SvArrayCount * SvCyclesTotal) / SvArrayElements[SvNextLiveArr]) << (8 - SvNoteFactor[SvNextLiveArr]))) * SvCyclesTotal] * SvNoteForPlayArray.SvNoteVolume) >> 8;
 		}
 	}
 }
@@ -191,7 +179,6 @@ void Start_Timer0_PWM (void) {
 	TCCR0A |= (1 << COM0A1);  // Clear OC0A on Compare Match, set OC0A at BOTTOM
 	TIMSK0 |= (1 << TOIE0);  // Enable PWM overflow interrupt, REMEMBER TO START ALL INTERRUPTS sei(); 
 	OCR0A = 0;  // set Output Compare Register A to 0 (one cycle on per 256)
-	//OCR0A = 0x00;  // test for designing and verifying the transistor amplifier circuit
 	TCCR0B |= (1 << CS00);  // start PWM timer with no prescaler
 }
 
@@ -200,7 +187,6 @@ ISR(TIMER0_OVF_vect) {
 	OCR0A = SvNextPWMValue;  // all that for this, put the PWM value in the timer register
 	SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
 	if ( SvNoteHighNOTLow[SvLiveArr] == 1 ) {  // this is a High note, notes > 59.  count through an element in the SvPlayArray[] for every 78k cycle.
-		//SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
 		if (SvArrayLiveCounter >= SvArrayElements[SvLiveArr] ) {
 			SvArrayLiveCounter = 0;
 		}
@@ -209,7 +195,6 @@ ISR(TIMER0_OVF_vect) {
 	else {  // this is a low note, notes <= 59.  count through an element in the SvPlayArray[] for every (1 << SvNoteFactor) times 78k cycle.
 		if ( SvFactor78KCounter >= ( ( 1 << SvNoteFactor[SvLiveArr] ) - 1 ) ) {
 			SvFactor78KCounter = 0;
-			//SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
 			if (SvArrayLiveCounter >= SvArrayElements[SvLiveArr] ) {
 				SvArrayLiveCounter = 0;
 			}
