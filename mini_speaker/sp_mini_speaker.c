@@ -11,7 +11,7 @@
 // note 72 is base note for octave 0, note 0.  note 0 is MIDI note 15, note 112 is MIDI note 127.
 // lookup table array - 122 entries (0-121), 440Hz reference note is note 54, middle C is note entry 45 (299 periods of 78,125 Hz)
 // when I learn how, put this in Flash (PROGMEM method)
-uint8_t SvNoteWaveLength78K[] = { 251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237,224,211,199,188,178,168,158,149,141,133,251,237 } ;
+uint8_t SvNoteWaveLength78K[] = { 250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236,223,210,198,187,177,167,157,148,140,132,250,236 } ;
 
 // lookup table array - Sine Wave - 256 steps (0-255) with values from 0-255
 // when I learn how, put this in Flash (PROGMEM method)
@@ -25,30 +25,33 @@ volatile uint8_t SvPlayArray[2][256] = { { 127,131,134,137,140,143,146,149,152,1
 volatile uint8_t SvArrayElements[] = { 255, 255 };
 
 // SvNoteHighNOTLow[] - for ISR, indicates which method of counting cycles to use.
-// Low notes (notes 0-47) count through SvPlayArray[] by binary multiples(?) of 78K cycles.  (1 << SvNoteFactor) 78K cycles per array element.
-// High notes (notes 48-121) move to the next element of SvPlayArray[] each 78K cycle.
+// Low notes (notes 0-47) count through SvPlayArray[] by binary multiples(?) of 78K cycles.  wait multiple (1 << SvNoteFactor) 78K cycles per array element.
+// base octave, octave 0, notes 48-59, setp through the 1 sine wave cycle in  SvPlayArray[], 1 step per 78K cycle.
+// High notes (notes 48-121) move to the next element of SvPlayArray[] each 78K cycle.  SvPlayArray[] contains multiple (1 << SvNoteFactor) sine wave cycles.
+// notes 0-11, SvNoteHighNOTLow[] = 0, SvNoteFactor[] = 
 volatile uint8_t SvNoteHighNOTLow[] = { 1, 1 };  // just a binary value
-volatile uint8_t SvNoteFactor[2];  // initializes to 0
+volatile uint8_t SvNoteFactor[] = { 0, 0 };   // indicates how many octaves the note is from the base octave.  octave 0 is notes 48-59.
 
-volatile uint8_t SvArrNoteDuration[] = { 63, 63 };  // numbered in SvDurationResolution units (the fractional note durations of BPM), counting from 0 to total counts, up to 255
-volatile uint16_t SvDurationResolution[] = { 305, 305 };  // number of 78K cycles for in the minimum fractional note duration
+volatile uint8_t SvArrNoteDuration[] = { 31, 31 };  // numbered in SvDurationResolution units (the fractional note durations of BPM), counting from 0 to total counts, up to 255
+volatile uint16_t SvDurationResolution[] = { 304, 304 };  // start counting from 0.  number of 78K cycles for in the minimum fractional note duration
 
 volatile uint8_t SvLiveArr;  // binary value, selects which SvPlayArray[] is currently being "played"
 volatile uint8_t SvNextLiveArr;  // binary value, selects which SvPlayArray[] is next
+volatile uint8_t SvNextPWMValue;
 volatile uint8_t SvArrayLiveCounter;  // counts which element is currently being "played", from 0 up to SvArrayElements[]
 volatile uint8_t SvFactor78KCounter;  // for Low notes, counts the current count of 78K cycles, from 0 up to (1 << SvNoteFactor[])-1
 volatile uint8_t SvLiveNoteDurationCounter;  // counts how long the current note has been played, when SvLiveNoteDurationCounter = SvArrNoteDuration[], toggle SvLiveArr
-
-volatile uint16_t SvLive78kCyclesCounter;  // counts how many 78K cycles have been played in the current duration resolution unit
+volatile uint16_t SvLive78KCyclesCounter;  // counts how many 78K cycles have been played in the current duration resolution unit
 volatile uint8_t SvStartCalculatingNextNote;  // flag that indicates that SvLiveArray has been toggled, and it's time to start calculating the next note's SvPlayArray[]
+volatile uint8_t SvResetGoToNextNote;  // flag for the ISR to reset the counter variables and change to the next note, swap SvLiveArr and SvNextLiveArr settings
 
 struct NoteStruct {
 	uint8_t SvNoteNum;
-	uint16_t SvNoteDuration;  // counting from 0 to total counts?
+	uint8_t SvNoteDuration;  // counting from 0 to total counts
 	uint16_t SvNoteVolume;
 };
 uint8_t SvNumberOfNotesToPlay;
-struct NoteStruct SvNotesToPlay[6];
+struct NoteStruct SvNotesToPlay[8];  // start counting number of notes from 1 here
 struct NoteStruct SvNoteForPlayArray;
 
 void SfToneGenerator (struct NoteStruct SvNoteForPlayArray);
@@ -65,57 +68,76 @@ int main (void) {
 	// the smallest value for note duration should be no less than 1/305 of a second, 256 "78K cycles".
 	// this minimum can be increased up to 512 "78K cycles", to work out various BPM settings.
 	// beginning example 120 BPM with 128th notes.  1/256 of a second minimum note duration, this is 305 "78K cycles".
-	SvMusicTempoBPMxSub = 120 * 128;  // beats per minute times the number of fractional note durations, if using a faster BPM than 120, use less than 128th fractional note durations
-	SvDurationResolution[0] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub );  // 4,687,500 = 78,125 * 60
-	SvDurationResolution[1] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub );  // 4,687,500 = 78,125 * 60
+	SvMusicTempoBPMxSub = 120 * 64;  // beats per minute times the number of fractional note durations, if using a faster BPM than 120, use less than 128th fractional note durations
+	
+	// TEST
+	//SvDurationResolution[0] = 511;
+	//SvDurationResolution[1] = 511;
+	// END TEST
 	//SvDurationResolution = 2441;  // temp test for math, 2441 is 32 per second ( 78,125 PWM cycles-per-second * 60 seconds ) / (120BPM * 16) for 16th notes resolution
 	//SvDurationResolution = 305;  // temp test for math, 305 is 256 per second ( 78,125 PWM cycles-per-second * 60 seconds ) / (120 BPM * 128) for 128th notes resolution
+	SvDurationResolution[0] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub ) - 1 ;  // number of PWM duty cycles in a minute is 4,687,500 = 78,125 * 60
+	SvDurationResolution[1] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub ) - 1 ;  // number of PWM duty cycles in a minute is 4,687,500 = 78,125 * 60
 	
-	SvNumberOfNotesToPlay = 6;
 	
-	SvNotesToPlay[0].SvNoteNum = 39;
-	SvNotesToPlay[0].SvNoteDuration = 64;
+	SvNumberOfNotesToPlay = 7;  // start counting from 0 here
+	
+	SvNotesToPlay[0].SvNoteNum = 3;
+	SvNotesToPlay[0].SvNoteDuration = 31;
 	SvNotesToPlay[0].SvNoteVolume = 127;
 	
-	SvNotesToPlay[1].SvNoteNum = 42;
-	SvNotesToPlay[1].SvNoteDuration = 64;
+	SvNotesToPlay[1].SvNoteNum = 15;
+	SvNotesToPlay[1].SvNoteDuration = 31;
 	SvNotesToPlay[1].SvNoteVolume = 127;
 	
-	SvNotesToPlay[2].SvNoteNum = 45;
-	SvNotesToPlay[2].SvNoteDuration = 64;
+	SvNotesToPlay[2].SvNoteNum = 27;
+	SvNotesToPlay[2].SvNoteDuration = 31;
 	SvNotesToPlay[2].SvNoteVolume = 127;
 	
-	SvNotesToPlay[3].SvNoteNum = 48;
-	SvNotesToPlay[3].SvNoteDuration = 64;
+	SvNotesToPlay[3].SvNoteNum = 39;
+	SvNotesToPlay[3].SvNoteDuration = 31;
 	SvNotesToPlay[3].SvNoteVolume = 127;
 	
 	SvNotesToPlay[4].SvNoteNum = 51;
-	SvNotesToPlay[4].SvNoteDuration = 64;
+	SvNotesToPlay[4].SvNoteDuration = 31;
 	SvNotesToPlay[4].SvNoteVolume = 127;
 	
-	SvNotesToPlay[5].SvNoteNum = 54;
-	SvNotesToPlay[5].SvNoteDuration = 64;
+	SvNotesToPlay[5].SvNoteNum = 63;
+	SvNotesToPlay[5].SvNoteDuration = 31;
 	SvNotesToPlay[5].SvNoteVolume = 127;
 	
-	SvLiveArr = 0;  // initialized to 0 for clarity
-	SvNextLiveArr = 1;
+	SvNotesToPlay[6].SvNoteNum = 75;
+	SvNotesToPlay[6].SvNoteDuration = 31;
+	SvNotesToPlay[6].SvNoteVolume = 127;
+	
+	SvNotesToPlay[7].SvNoteNum = 87;
+	SvNotesToPlay[7].SvNoteDuration = 31;
+	SvNotesToPlay[7].SvNoteVolume = 127;
+	
+	SvLiveArr = 1;
+	SvNextLiveArr = 0;
 	SfToneGenerator(SvNotesToPlay[0]);  // fill the SvPlayArray[0] with useful data
+	SvLiveArr = 0;
+	SvNextLiveArr = 1;
+	
+	SvNoteStructNum = 1;
+	SvResetGoToNextNote = 0;
+	SvStartCalculatingNextNote = 1;
+	
+	SvNextPWMValue = 127;
+	SvArrayLiveCounter = 0;
+	SvFactor78KCounter = 0;
+	SvLive78KCyclesCounter = 0;
+	SvLiveNoteDurationCounter = 0;
 	
 	sei();  // DUH!
 	Start_Timer0_PWM ();
 	
-	SvNoteStructNum = 0;
-	SvStartCalculatingNextNote = 1;
-	
 	while (1) {
 		
 		if (SvStartCalculatingNextNote == 1) {
-			SvArrayLiveCounter = 0;
-			SvFactor78KCounter = 0;
-			SvLive78kCyclesCounter = 0;
-			SvLiveNoteDurationCounter = 0;
 			SfToneGenerator(SvNotesToPlay[SvNoteStructNum]);
-			if (SvNoteStructNum == SvNumberOfNotesToPlay) {
+			if (SvNoteStructNum >= SvNumberOfNotesToPlay) {
 				SvNoteStructNum = 0;  // start over at beginning of list
 			}
 			else SvNoteStructNum++;
@@ -123,10 +145,9 @@ int main (void) {
 	}
 }
 
-void SfToneGenerator (struct NoteStruct SvNoteForPlayArray) {  //uint8_t SvNoteNum, uint16_t SvNoteDuration, uint16_t SvNoteVolume
+void SfToneGenerator (struct NoteStruct SvNoteForPlayArray) {
 	
-	uint8_t SvArrayCount;  // for loop counter
-	uint8_t SvCyclesTotal;  // = ( 1 << SvNoteFactor[] )
+	uint16_t SvArrayCount;  // for loop counter
 	uint16_t temp1;
 	uint8_t temp2;
 	uint16_t temp3;
@@ -135,28 +156,29 @@ void SfToneGenerator (struct NoteStruct SvNoteForPlayArray) {  //uint8_t SvNoteN
 	SvStartCalculatingNextNote = 0;  // calculating the next note SvPlayArray is started
 	SvArrNoteDuration[SvNextLiveArr] = SvNoteForPlayArray.SvNoteDuration;  // currently going to set up the NON live array
 	
-	if (SvNoteForPlayArray.SvNoteNum < 48) {
+	if (SvNoteForPlayArray.SvNoteNum < 48) {  // low note version, notes 0-47.
+		//step one or more (2, 4, 8, or 16) 78K step(s) along the one sine wave in SvPlayArray[] 
 		
-		SvNoteHighNOTLow[SvNextLiveArr] = 0;  // false, this is not a high note, it is a low note
-		SvNoteFactor[SvNextLiveArr] = (47 - SvNoteForPlayArray.SvNoteNum) / 12;  // (1 << SvNoteFactor[]) is the number of 78K steps per entry in SvPlayArray[] (count by (1 << SvNoteFactor[]) when playing back
+		SvNoteHighNOTLow[SvNextLiveArr] = 0;  // set to false, this is a low note, not a high note
+		SvNoteFactor[SvNextLiveArr] = ( 59 - SvNoteForPlayArray.SvNoteNum ) / 12;  // (1 << SvNoteFactor[]) is the number of 78K steps per entry in SvPlayArray[] (count by (1 << SvNoteFactor[]) when playing back
 		SvArrayElements[SvNextLiveArr] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
-		for (SvArrayCount = 0; SvArrayCount < SvArrayElements[SvNextLiveArr]; SvArrayCount++) {
-			temp1 = (SvArrayCount << 8);  // temp1 is 16 bit, need 16 bit result
-			SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ temp1 / SvArrayElements[SvNextLiveArr] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
+		for ( SvArrayCount = 0; SvArrayCount <= SvArrayElements[SvNextLiveArr]; SvArrayCount++ ) {
+			temp1 = SvArrayCount << 8;  // temp1 is 16 bit, need 16 bit result
+			SvPlayArray[SvNextLiveArr][SvArrayCount] = ( SvSineWaveLookup256[ temp1 / ( SvArrayElements[SvNextLiveArr] + 1 ) ] * SvNoteForPlayArray.SvNoteVolume ) >> 8;
 		}
 	}
-	else {  // SvNoteNum > 47
+	else {  // SvNoteNum >= 48, high note version.  notes 48-121.
+		//step one 78K steps along the two or more (2, 4, 8, 16, 32 or 64) sine waves in SvPlayArray[] 
 		
-		SvNoteHighNOTLow[SvNextLiveArr] = 1;  // true, this is a high note, not a low note
-		SvNoteFactor[SvNextLiveArr] = (SvNoteForPlayArray.SvNoteNum - 36) / 12;  // (1 << SvNoteFactor) is number of Sine Wave Cycles in the SvPlayArray
+		SvNoteHighNOTLow[SvNextLiveArr] = 1;  // set to true, this is a high note, not a low note
+		SvNoteFactor[SvNextLiveArr] = ( (SvNoteForPlayArray.SvNoteNum - 48) / 12 );  // (1 << SvNoteFactor) is number of Sine Wave Cycles in the SvPlayArray
 		SvArrayElements[SvNextLiveArr] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
-		SvCyclesTotal = ( 1 << SvNoteFactor[SvNextLiveArr] );  // for use in calculation in the next line
-		for (SvArrayCount = 0; SvArrayCount < SvArrayElements[SvNextLiveArr]; SvArrayCount++) {
-			temp1 = (SvArrayCount << 8);  // temp1 is 16 bit, need 16 bit result
-			temp2 = (temp1 / SvArrayElements[SvNextLiveArr]);  // temp2 is intermediate result to make the equation shorter
-			temp3 = (SvArrayCount * SvCyclesTotal);  // temp3 is 16 bit, need 16 bit result
-			temp4 = (( temp3 / SvArrayElements[SvNextLiveArr]) << (8 - SvNoteFactor[SvNextLiveArr]));  // temp4 is intermediate result to make the equation shorter
-			SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (temp2 - temp4) * SvCyclesTotal] * SvNoteForPlayArray.SvNoteVolume) >> 8;
+		for (SvArrayCount = 0; SvArrayCount <= SvArrayElements[SvNextLiveArr]; SvArrayCount++) {
+			temp1 = SvArrayCount << 8;  // temp1 is 16 bit, need 16 bit result
+			temp2 = temp1 / ( SvArrayElements[SvNextLiveArr] + 1 ) ;  // temp2 is intermediate result to make the equation shorter
+			temp3 = SvArrayCount << SvNoteFactor[SvNextLiveArr];  // temp3 is 16 bit, need 16 bit result
+			temp4 = ( temp3 / ( SvArrayElements[SvNextLiveArr] + 1 ) ) << ( 8 - SvNoteFactor[SvNextLiveArr] );  // temp4 is intermediate result to make the equation shorter
+			SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (temp2 - temp4) << SvNoteFactor[SvNextLiveArr] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
 			//SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (((SvArrayCount << 8) / SvArrayElements[SvNextLiveArr]) - (((SvArrayCount * SvCyclesTotal) / SvArrayElements[SvNextLiveArr]) << (8 - SvNoteFactor[SvNextLiveArr]))) * SvCyclesTotal] * SvNoteForPlayArray.SvNoteVolume) >> 8;
 		}
 	}
@@ -175,60 +197,51 @@ void Start_Timer0_PWM (void) {
 
 ISR(TIMER0_OVF_vect) {
 	
-	if (SvNoteHighNOTLow[SvLiveArr]) {  // this is a High note, notes > 47.  count through an element in the SvPlayArray[] for every 78k cycle.
-		
-		OCR0A = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
-		if (SvArrayLiveCounter == SvArrayElements[SvLiveArr] ) {
+	OCR0A = SvNextPWMValue;  // all that for this, put the PWM value in the timer register
+	SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
+	if ( SvNoteHighNOTLow[SvLiveArr] == 1 ) {  // this is a High note, notes > 59.  count through an element in the SvPlayArray[] for every 78k cycle.
+		//SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
+		if (SvArrayLiveCounter >= SvArrayElements[SvLiveArr] ) {
 			SvArrayLiveCounter = 0;
 		}
 		else SvArrayLiveCounter++;
-		
-		if (SvLive78kCyclesCounter == SvDurationResolution[SvLiveArr] ) {
-			SvLive78kCyclesCounter = 0;
-			if (SvLiveNoteDurationCounter == SvArrNoteDuration[SvLiveArr] ) {
-				SvLiveNoteDurationCounter = 0;
-				if (SvLiveArr == 1) {  // toggle to the other array, it's now the "live" array being "played"
-					SvLiveArr = 0;
-					SvNextLiveArr = 1;
-				}
-				else {
-					SvLiveArr = 1;
-					SvNextLiveArr = 0;
-				}
-				SvStartCalculatingNextNote = 1;  // flag indicates it's time to start calculating the new next note SvPlayArray
-			}
-			else SvLiveNoteDurationCounter++;
-		}
-		else SvLive78kCyclesCounter++;
 	}
-	else {  // this is a low note, notes < 48.  count through an element in the SvPlayArray[] for every (1 << SvNoteFactor) times 78k cycle.
-		
-		if (SvFactor78KCounter == (1 << SvNoteFactor[SvLiveArr] )-1 ) {
+	else {  // this is a low note, notes <= 59.  count through an element in the SvPlayArray[] for every (1 << SvNoteFactor) times 78k cycle.
+		if ( SvFactor78KCounter >= ( ( 1 << SvNoteFactor[SvLiveArr] ) - 1 ) ) {
 			SvFactor78KCounter = 0;
-			OCR0A = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
-			if (SvArrayLiveCounter == SvArrayElements[SvLiveArr] ) {
+			//SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
+			if (SvArrayLiveCounter >= SvArrayElements[SvLiveArr] ) {
 				SvArrayLiveCounter = 0;
 			}
 			else SvArrayLiveCounter++;
 		}
 		else SvFactor78KCounter++;
-		
-		if (SvLive78kCyclesCounter == SvDurationResolution[SvLiveArr] ) {
-			SvLive78kCyclesCounter = 0;
-			if (SvLiveNoteDurationCounter == SvArrNoteDuration[SvLiveArr] ) {
-				SvLiveNoteDurationCounter = 0;
-				if (SvLiveArr == 1) {  // toggle to the other array, it's now the "live" array being "played"
-					SvLiveArr = 0;
-					SvNextLiveArr = 1;
-				}
-				else {
-					SvLiveArr = 1;
-					SvNextLiveArr = 0;
-				}
-				SvStartCalculatingNextNote = 1;  // flag indicates it's time to start calculating the new next note SvPlayArray
-			}
-			else SvLiveNoteDurationCounter++;
+	}
+	if (SvLive78KCyclesCounter >= SvDurationResolution[SvLiveArr] ) {
+		SvLive78KCyclesCounter = 0;
+		if (SvLiveNoteDurationCounter >= SvArrNoteDuration[SvLiveArr] ) {
+			SvLiveNoteDurationCounter = 0;
+			SvResetGoToNextNote = 1;
 		}
-		else SvLive78kCyclesCounter++;
+		else SvLiveNoteDurationCounter++;
+	}
+	else SvLive78KCyclesCounter++;
+	
+	if (SvResetGoToNextNote > 0 ) {  // reset the counter variables and change to the next note, swap SvLiveArr and SvNextLiveArr settings
+		SvResetGoToNextNote = 0;
+		SvNextPWMValue = 127;
+		SvArrayLiveCounter = 0;
+		SvLive78KCyclesCounter = 0;
+		SvLiveNoteDurationCounter = 0;
+		SvFactor78KCounter = 0;
+		SvStartCalculatingNextNote = 1;  // flag indicates it's time to start calculating the new next note SvPlayArray
+		if (SvLiveArr == 1) {  // toggle to the other array, it's now the "live" array being "played"
+			SvLiveArr = 0;
+			SvNextLiveArr = 1;
+		}
+		else {
+			SvLiveArr = 1;
+			SvNextLiveArr = 0;
+		}
 	}
 }

@@ -3,31 +3,31 @@ sp_mini_speaker.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000400  00800100  00000588  0000061c  2**0
+  0 .data         00000384  00800100  000005cc  00000660  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000588  00000000  00000000  00000094  2**1
+  1 .text         000005cc  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000021  00800500  00800500  00000a1c  2**0
+  2 .bss          00000031  00800484  00800484  000009e4  2**0
                   ALLOC
-  3 .stab         000006b4  00000000  00000000  00000a1c  2**2
+  3 .stab         000006b4  00000000  00000000  000009e4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      00000054  00000000  00000000  000010d0  2**0
+  4 .stabstr      00000054  00000000  00000000  00001098  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_aranges 00000020  00000000  00000000  00001124  2**0
+  5 .debug_aranges 00000020  00000000  00000000  000010ec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_pubnames 000001d4  00000000  00000000  00001144  2**0
+  6 .debug_pubnames 00000211  00000000  00000000  0000110c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   00000307  00000000  00000000  00001318  2**0
+  7 .debug_info   00000366  00000000  00000000  0000131d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00000107  00000000  00000000  0000161f  2**0
+  8 .debug_abbrev 000000f8  00000000  00000000  00001683  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   000002a0  00000000  00000000  00001726  2**0
+  9 .debug_line   000003f2  00000000  00000000  0000177b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000050  00000000  00000000  000019c8  2**2
+ 10 .debug_frame  00000050  00000000  00000000  00001b70  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00000263  00000000  00000000  00001a18  2**0
+ 11 .debug_str    0000029e  00000000  00000000  00001bc0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00000034  00000000  00000000  00001c7b  2**0
+ 12 .debug_loc    0000008a  00000000  00000000  00001e5e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -49,7 +49,7 @@ Disassembly of section .text:
   34:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   38:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   3c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
-  40:	0c 94 20 02 	jmp	0x440	; 0x440 <__vector_16>
+  40:	0c 94 05 02 	jmp	0x40a	; 0x40a <__vector_16>
   44:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   48:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   4c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
@@ -69,10 +69,10 @@ Disassembly of section .text:
   72:	cd bf       	out	0x3d, r28	; 61
 
 00000074 <__do_copy_data>:
-  74:	15 e0       	ldi	r17, 0x05	; 5
+  74:	14 e0       	ldi	r17, 0x04	; 4
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	e8 e8       	ldi	r30, 0x88	; 136
+  7a:	ec ec       	ldi	r30, 0xCC	; 204
   7c:	f5 e0       	ldi	r31, 0x05	; 5
   7e:	02 c0       	rjmp	.+4      	; 0x84 <.do_copy_data_start>
 
@@ -81,764 +81,826 @@ Disassembly of section .text:
   82:	0d 92       	st	X+, r0
 
 00000084 <.do_copy_data_start>:
-  84:	a0 30       	cpi	r26, 0x00	; 0
+  84:	a4 38       	cpi	r26, 0x84	; 132
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <.do_copy_data_loop>
 
 0000008a <__do_clear_bss>:
-  8a:	15 e0       	ldi	r17, 0x05	; 5
-  8c:	a0 e0       	ldi	r26, 0x00	; 0
-  8e:	b5 e0       	ldi	r27, 0x05	; 5
+  8a:	14 e0       	ldi	r17, 0x04	; 4
+  8c:	a4 e8       	ldi	r26, 0x84	; 132
+  8e:	b4 e0       	ldi	r27, 0x04	; 4
   90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
 
 00000092 <.do_clear_bss_loop>:
   92:	1d 92       	st	X+, r1
 
 00000094 <.do_clear_bss_start>:
-  94:	a1 32       	cpi	r26, 0x21	; 33
+  94:	a5 3b       	cpi	r26, 0xB5	; 181
   96:	b1 07       	cpc	r27, r17
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
-  9a:	0e 94 af 01 	call	0x35e	; 0x35e <main>
-  9e:	0c 94 c2 02 	jmp	0x584	; 0x584 <_exit>
+  9a:	0e 94 6b 01 	call	0x2d6	; 0x2d6 <main>
+  9e:	0c 94 e4 02 	jmp	0x5c8	; 0x5c8 <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000000a6 <SfToneGenerator>:
-			SvNoteStructNum++;
+			else SvNoteStructNum++;
 		}
 	}
 }
 
 void SfToneGenerator (struct NoteStruct SvNoteForPlayArray) {
-  a6:	6f 92       	push	r6
-  a8:	7f 92       	push	r7
-  aa:	8f 92       	push	r8
-  ac:	9f 92       	push	r9
-  ae:	af 92       	push	r10
-  b0:	bf 92       	push	r11
-  b2:	cf 92       	push	r12
-  b4:	df 92       	push	r13
-  b6:	ef 92       	push	r14
-  b8:	ff 92       	push	r15
-  ba:	0f 93       	push	r16
-  bc:	1f 93       	push	r17
-  be:	df 93       	push	r29
-  c0:	cf 93       	push	r28
-  c2:	00 d0       	rcall	.+0      	; 0xc4 <SfToneGenerator+0x1e>
-  c4:	00 d0       	rcall	.+0      	; 0xc6 <SfToneGenerator+0x20>
-  c6:	0f 92       	push	r0
-  c8:	cd b7       	in	r28, 0x3d	; 61
-  ca:	de b7       	in	r29, 0x3e	; 62
-  cc:	24 2f       	mov	r18, r20
-  ce:	49 83       	std	Y+1, r20	; 0x01
-  d0:	5a 83       	std	Y+2, r21	; 0x02
-  d2:	6b 83       	std	Y+3, r22	; 0x03
-  d4:	7c 83       	std	Y+4, r23	; 0x04
-  d6:	8d 83       	std	Y+5, r24	; 0x05
-  d8:	8c 80       	ldd	r8, Y+4	; 0x04
-  da:	9d 80       	ldd	r9, Y+5	; 0x05
-//void SfToneGenerator (uint8_t SvNoteNum, uint16_t SvNoteDuration, uint16_t SvNoteVolume) {
-	
-	uint8_t SvArrayCount;  // for loop counter
-	uint8_t SvCyclesTotal;  // = ( 1 << SvNoteFactor[] )
+  a6:	af 92       	push	r10
+  a8:	bf 92       	push	r11
+  aa:	cf 92       	push	r12
+  ac:	df 92       	push	r13
+  ae:	ff 92       	push	r15
+  b0:	0f 93       	push	r16
+  b2:	1f 93       	push	r17
+  b4:	cf 93       	push	r28
+  b6:	df 93       	push	r29
+  b8:	6c 01       	movw	r12, r24
+	uint16_t temp1;
+	uint8_t temp2;
+	uint16_t temp3;
+	uint8_t temp4;
 	
 	SvStartCalculatingNextNote = 0;  // calculating the next note SvPlayArray is started
-  dc:	10 92 20 05 	sts	0x0520, r1
-	SvArrNoteDuration[ ~(SvLiveArr) ] = SvNoteForPlayArray.SvNoteDuration;  // currently going to set up the NON live array
-  e0:	e0 91 01 05 	lds	r30, 0x0501
-  e4:	f0 e0       	ldi	r31, 0x00	; 0
-  e6:	e0 95       	com	r30
-  e8:	f0 95       	com	r31
-  ea:	e8 50       	subi	r30, 0x08	; 8
-  ec:	fb 4f       	sbci	r31, 0xFB	; 251
-  ee:	50 83       	st	Z, r21
+  ba:	10 92 b4 04 	sts	0x04B4, r1
+	SvArrNoteDuration[SvNextLiveArr] = SvNoteForPlayArray.SvNoteDuration;  // currently going to set up the NON live array
+  be:	e0 91 ad 04 	lds	r30, 0x04AD
+  c2:	f0 e0       	ldi	r31, 0x00	; 0
+  c4:	e2 58       	subi	r30, 0x82	; 130
+  c6:	fb 4f       	sbci	r31, 0xFB	; 251
+  c8:	70 83       	st	Z, r23
 	
-	if (SvNoteForPlayArray.SvNoteNum < 48) {
-  f0:	40 33       	cpi	r20, 0x30	; 48
-  f2:	08 f0       	brcs	.+2      	; 0xf6 <SfToneGenerator+0x50>
-  f4:	7a c0       	rjmp	.+244    	; 0x1ea <SfToneGenerator+0x144>
+	if (SvNoteForPlayArray.SvNoteNum < 48) {  // low note version, notes 0-47.
+  ca:	60 33       	cpi	r22, 0x30	; 48
+  cc:	08 f0       	brcs	.+2      	; 0xd0 <SfToneGenerator+0x2a>
+  ce:	62 c0       	rjmp	.+196    	; 0x194 <SfToneGenerator+0xee>
+		//step one or more (2, 4, 8, or 16) 78K step(s) along the one sine wave in SvPlayArray[] 
 		
-		SvNoteHighNOTLow[ ~(SvLiveArr) ] = 0;  // false, this is not a high note, it is a low note
-  f6:	e0 91 01 05 	lds	r30, 0x0501
-  fa:	f0 e0       	ldi	r31, 0x00	; 0
-  fc:	e0 95       	com	r30
-  fe:	f0 95       	com	r31
- 100:	ea 50       	subi	r30, 0x0A	; 10
- 102:	fb 4f       	sbci	r31, 0xFB	; 251
- 104:	10 82       	st	Z, r1
-		SvNoteFactor[ ~(SvLiveArr) ] = (60-SvNoteForPlayArray.SvNoteNum) / 12;  // (1 << SvNoteFactor[]) is the number of 78K steps per entry in SvPlayArray[] (count by (1 << SvNoteFactor[]) when playing back
- 106:	e0 91 01 05 	lds	r30, 0x0501
- 10a:	f0 e0       	ldi	r31, 0x00	; 0
- 10c:	e0 95       	com	r30
- 10e:	f0 95       	com	r31
- 110:	30 e0       	ldi	r19, 0x00	; 0
- 112:	8c e3       	ldi	r24, 0x3C	; 60
- 114:	90 e0       	ldi	r25, 0x00	; 0
- 116:	82 1b       	sub	r24, r18
- 118:	93 0b       	sbc	r25, r19
- 11a:	6c e0       	ldi	r22, 0x0C	; 12
- 11c:	70 e0       	ldi	r23, 0x00	; 0
- 11e:	0e 94 9b 02 	call	0x536	; 0x536 <__divmodhi4>
- 122:	e9 5e       	subi	r30, 0xE9	; 233
- 124:	fa 4f       	sbci	r31, 0xFA	; 250
- 126:	60 83       	st	Z, r22
-		SvArrayElements[ ~(SvLiveArr) ] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
- 128:	e0 91 01 05 	lds	r30, 0x0501
- 12c:	f0 e0       	ldi	r31, 0x00	; 0
- 12e:	e0 95       	com	r30
- 130:	f0 95       	com	r31
- 132:	22 0f       	add	r18, r18
- 134:	33 1f       	adc	r19, r19
- 136:	20 50       	subi	r18, 0x00	; 0
- 138:	3f 4f       	sbci	r19, 0xFF	; 255
- 13a:	d9 01       	movw	r26, r18
- 13c:	8c 91       	ld	r24, X
- 13e:	ec 50       	subi	r30, 0x0C	; 12
- 140:	fb 4f       	sbci	r31, 0xFB	; 251
- 142:	80 83       	st	Z, r24
-		for (SvArrayCount = 0; SvArrayCount < SvArrayElements[ ~(SvLiveArr) ]; SvArrayCount++) {
- 144:	e0 91 01 05 	lds	r30, 0x0501
- 148:	f0 e0       	ldi	r31, 0x00	; 0
- 14a:	e0 95       	com	r30
- 14c:	f0 95       	com	r31
- 14e:	ec 50       	subi	r30, 0x0C	; 12
- 150:	fb 4f       	sbci	r31, 0xFB	; 251
- 152:	80 81       	ld	r24, Z
- 154:	88 23       	and	r24, r24
- 156:	a9 f1       	breq	.+106    	; 0x1c2 <SfToneGenerator+0x11c>
- 158:	40 e0       	ldi	r20, 0x00	; 0
-			SvPlayArray[ ~(SvLiveArr) ][SvArrayCount] = (SvSineWaveLookup256[ (SvArrayCount << 8) / SvArrayElements[ ~(SvLiveArr) ] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
- 15a:	80 91 01 05 	lds	r24, 0x0501
- 15e:	08 2f       	mov	r16, r24
- 160:	10 e0       	ldi	r17, 0x00	; 0
- 162:	00 95       	com	r16
- 164:	10 95       	com	r17
- 166:	24 2f       	mov	r18, r20
- 168:	30 e0       	ldi	r19, 0x00	; 0
- 16a:	e0 91 01 05 	lds	r30, 0x0501
- 16e:	f0 e0       	ldi	r31, 0x00	; 0
- 170:	e0 95       	com	r30
- 172:	f0 95       	com	r31
- 174:	ec 50       	subi	r30, 0x0C	; 12
- 176:	fb 4f       	sbci	r31, 0xFB	; 251
- 178:	60 81       	ld	r22, Z
- 17a:	80 e0       	ldi	r24, 0x00	; 0
- 17c:	94 2f       	mov	r25, r20
- 17e:	70 e0       	ldi	r23, 0x00	; 0
- 180:	0e 94 9b 02 	call	0x536	; 0x536 <__divmodhi4>
- 184:	fb 01       	movw	r30, r22
- 186:	ec 50       	subi	r30, 0x0C	; 12
- 188:	fe 4f       	sbci	r31, 0xFE	; 254
- 18a:	80 81       	ld	r24, Z
- 18c:	90 e0       	ldi	r25, 0x00	; 0
- 18e:	bc 01       	movw	r22, r24
- 190:	68 9d       	mul	r22, r8
- 192:	c0 01       	movw	r24, r0
- 194:	69 9d       	mul	r22, r9
- 196:	90 0d       	add	r25, r0
- 198:	78 9d       	mul	r23, r8
- 19a:	90 0d       	add	r25, r0
- 19c:	11 24       	eor	r1, r1
- 19e:	f0 2f       	mov	r31, r16
- 1a0:	ee 27       	eor	r30, r30
- 1a2:	e2 0f       	add	r30, r18
- 1a4:	f3 1f       	adc	r31, r19
- 1a6:	ec 50       	subi	r30, 0x0C	; 12
- 1a8:	fd 4f       	sbci	r31, 0xFD	; 253
- 1aa:	90 83       	st	Z, r25
-	if (SvNoteForPlayArray.SvNoteNum < 48) {
+		SvNoteHighNOTLow[SvNextLiveArr] = 0;  // set to false, this is a low note, not a high note
+  d0:	e0 91 ad 04 	lds	r30, 0x04AD
+  d4:	f0 e0       	ldi	r31, 0x00	; 0
+  d6:	e4 58       	subi	r30, 0x84	; 132
+  d8:	fb 4f       	sbci	r31, 0xFB	; 251
+  da:	10 82       	st	Z, r1
+		SvNoteFactor[SvNextLiveArr] = ( 59 - SvNoteForPlayArray.SvNoteNum ) / 12;  // (1 << SvNoteFactor[]) is the number of 78K steps per entry in SvPlayArray[] (count by (1 << SvNoteFactor[]) when playing back
+  dc:	e0 91 ad 04 	lds	r30, 0x04AD
+  e0:	f0 e0       	ldi	r31, 0x00	; 0
+  e2:	26 2f       	mov	r18, r22
+  e4:	30 e0       	ldi	r19, 0x00	; 0
+  e6:	8b e3       	ldi	r24, 0x3B	; 59
+  e8:	90 e0       	ldi	r25, 0x00	; 0
+  ea:	82 1b       	sub	r24, r18
+  ec:	93 0b       	sbc	r25, r19
+  ee:	6c e0       	ldi	r22, 0x0C	; 12
+  f0:	70 e0       	ldi	r23, 0x00	; 0
+  f2:	0e 94 d1 02 	call	0x5a2	; 0x5a2 <__divmodhi4>
+  f6:	ec 57       	subi	r30, 0x7C	; 124
+  f8:	fb 4f       	sbci	r31, 0xFB	; 251
+  fa:	60 83       	st	Z, r22
+		SvArrayElements[SvNextLiveArr] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
+  fc:	e0 91 ad 04 	lds	r30, 0x04AD
+ 100:	f0 e0       	ldi	r31, 0x00	; 0
+ 102:	20 50       	subi	r18, 0x00	; 0
+ 104:	3f 4f       	sbci	r19, 0xFF	; 255
+ 106:	d9 01       	movw	r26, r18
+ 108:	8c 91       	ld	r24, X
+ 10a:	e6 58       	subi	r30, 0x86	; 134
+ 10c:	fb 4f       	sbci	r31, 0xFB	; 251
+ 10e:	80 83       	st	Z, r24
+		for ( SvArrayCount = 0; SvArrayCount <= SvArrayElements[SvNextLiveArr]; SvArrayCount++ ) {
+ 110:	e0 91 ad 04 	lds	r30, 0x04AD
+ 114:	f0 e0       	ldi	r31, 0x00	; 0
+ 116:	e6 58       	subi	r30, 0x86	; 134
+ 118:	fb 4f       	sbci	r31, 0xFB	; 251
+ 11a:	e0 81       	ld	r30, Z
+ 11c:	00 e0       	ldi	r16, 0x00	; 0
+ 11e:	10 e0       	ldi	r17, 0x00	; 0
+			temp1 = SvArrayCount << 8;  // temp1 is 16 bit, need 16 bit result
+			SvPlayArray[SvNextLiveArr][SvArrayCount] = ( SvSineWaveLookup256[ temp1 / ( SvArrayElements[SvNextLiveArr] + 1 ) ] * SvNoteForPlayArray.SvNoteVolume ) >> 8;
+ 120:	20 91 ad 04 	lds	r18, 0x04AD
+ 124:	e0 91 ad 04 	lds	r30, 0x04AD
+ 128:	f0 e0       	ldi	r31, 0x00	; 0
+ 12a:	e6 58       	subi	r30, 0x86	; 134
+ 12c:	fb 4f       	sbci	r31, 0xFB	; 251
+ 12e:	60 81       	ld	r22, Z
+ 130:	70 e0       	ldi	r23, 0x00	; 0
+ 132:	6f 5f       	subi	r22, 0xFF	; 255
+ 134:	7f 4f       	sbci	r23, 0xFF	; 255
+ 136:	80 e0       	ldi	r24, 0x00	; 0
+ 138:	90 2f       	mov	r25, r16
+ 13a:	0e 94 bd 02 	call	0x57a	; 0x57a <__udivmodhi4>
+ 13e:	fb 01       	movw	r30, r22
+ 140:	e6 58       	subi	r30, 0x86	; 134
+ 142:	fe 4f       	sbci	r31, 0xFE	; 254
+ 144:	80 81       	ld	r24, Z
+ 146:	90 e0       	ldi	r25, 0x00	; 0
+ 148:	ac 01       	movw	r20, r24
+ 14a:	4c 9d       	mul	r20, r12
+ 14c:	c0 01       	movw	r24, r0
+ 14e:	4d 9d       	mul	r20, r13
+ 150:	90 0d       	add	r25, r0
+ 152:	5c 9d       	mul	r21, r12
+ 154:	90 0d       	add	r25, r0
+ 156:	11 24       	eor	r1, r1
+ 158:	32 2f       	mov	r19, r18
+ 15a:	20 e0       	ldi	r18, 0x00	; 0
+ 15c:	f9 01       	movw	r30, r18
+ 15e:	e0 0f       	add	r30, r16
+ 160:	f1 1f       	adc	r31, r17
+ 162:	e6 58       	subi	r30, 0x86	; 134
+ 164:	fd 4f       	sbci	r31, 0xFD	; 253
+ 166:	90 83       	st	Z, r25
+		//step one or more (2, 4, 8, or 16) 78K step(s) along the one sine wave in SvPlayArray[] 
 		
-		SvNoteHighNOTLow[ ~(SvLiveArr) ] = 0;  // false, this is not a high note, it is a low note
-		SvNoteFactor[ ~(SvLiveArr) ] = (60-SvNoteForPlayArray.SvNoteNum) / 12;  // (1 << SvNoteFactor[]) is the number of 78K steps per entry in SvPlayArray[] (count by (1 << SvNoteFactor[]) when playing back
-		SvArrayElements[ ~(SvLiveArr) ] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
-		for (SvArrayCount = 0; SvArrayCount < SvArrayElements[ ~(SvLiveArr) ]; SvArrayCount++) {
- 1ac:	4f 5f       	subi	r20, 0xFF	; 255
- 1ae:	e0 91 01 05 	lds	r30, 0x0501
- 1b2:	f0 e0       	ldi	r31, 0x00	; 0
- 1b4:	e0 95       	com	r30
- 1b6:	f0 95       	com	r31
- 1b8:	ec 50       	subi	r30, 0x0C	; 12
- 1ba:	fb 4f       	sbci	r31, 0xFB	; 251
- 1bc:	80 81       	ld	r24, Z
- 1be:	48 17       	cp	r20, r24
- 1c0:	60 f2       	brcs	.-104    	; 0x15a <SfToneGenerator+0xb4>
-		SvArrayElements[ ~(SvLiveArr) ] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
-		for (SvArrayCount = 0; SvArrayCount < SvArrayElements[ ~(SvLiveArr) ]; SvArrayCount++) {
-			SvPlayArray[ ~(SvLiveArr) ][SvArrayCount] = (SvSineWaveLookup256[ (((SvArrayCount << 8) / SvArrayElements[ ~(SvLiveArr) ]) - (((SvArrayCount * SvCyclesTotal) / SvArrayElements[ ~(SvLiveArr) ]) << (8 - SvNoteFactor[ ~(SvLiveArr) ]))) * SvCyclesTotal] * SvNoteForPlayArray.SvNoteVolume) >> 8;
+		SvNoteHighNOTLow[SvNextLiveArr] = 0;  // set to false, this is a low note, not a high note
+		SvNoteFactor[SvNextLiveArr] = ( 59 - SvNoteForPlayArray.SvNoteNum ) / 12;  // (1 << SvNoteFactor[]) is the number of 78K steps per entry in SvPlayArray[] (count by (1 << SvNoteFactor[]) when playing back
+		SvArrayElements[SvNextLiveArr] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
+		for ( SvArrayCount = 0; SvArrayCount <= SvArrayElements[SvNextLiveArr]; SvArrayCount++ ) {
+ 168:	0f 5f       	subi	r16, 0xFF	; 255
+ 16a:	1f 4f       	sbci	r17, 0xFF	; 255
+ 16c:	e0 91 ad 04 	lds	r30, 0x04AD
+ 170:	f0 e0       	ldi	r31, 0x00	; 0
+ 172:	e6 58       	subi	r30, 0x86	; 134
+ 174:	fb 4f       	sbci	r31, 0xFB	; 251
+ 176:	80 81       	ld	r24, Z
+ 178:	90 e0       	ldi	r25, 0x00	; 0
+ 17a:	80 17       	cp	r24, r16
+ 17c:	91 07       	cpc	r25, r17
+ 17e:	80 f6       	brcc	.-96     	; 0x120 <SfToneGenerator+0x7a>
+			temp4 = ( temp3 / ( SvArrayElements[SvNextLiveArr] + 1 ) ) << ( 8 - SvNoteFactor[SvNextLiveArr] );  // temp4 is intermediate result to make the equation shorter
+			SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (temp2 - temp4) << SvNoteFactor[SvNextLiveArr] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
+			//SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (((SvArrayCount << 8) / SvArrayElements[SvNextLiveArr]) - (((SvArrayCount * SvCyclesTotal) / SvArrayElements[SvNextLiveArr]) << (8 - SvNoteFactor[SvNextLiveArr]))) * SvCyclesTotal] * SvNoteForPlayArray.SvNoteVolume) >> 8;
 		}
 	}
 }
- 1c2:	0f 90       	pop	r0
- 1c4:	0f 90       	pop	r0
- 1c6:	0f 90       	pop	r0
- 1c8:	0f 90       	pop	r0
- 1ca:	0f 90       	pop	r0
- 1cc:	cf 91       	pop	r28
- 1ce:	df 91       	pop	r29
- 1d0:	1f 91       	pop	r17
- 1d2:	0f 91       	pop	r16
- 1d4:	ff 90       	pop	r15
- 1d6:	ef 90       	pop	r14
- 1d8:	df 90       	pop	r13
- 1da:	cf 90       	pop	r12
- 1dc:	bf 90       	pop	r11
- 1de:	af 90       	pop	r10
- 1e0:	9f 90       	pop	r9
- 1e2:	8f 90       	pop	r8
- 1e4:	7f 90       	pop	r7
- 1e6:	6f 90       	pop	r6
- 1e8:	08 95       	ret
-			SvPlayArray[ ~(SvLiveArr) ][SvArrayCount] = (SvSineWaveLookup256[ (SvArrayCount << 8) / SvArrayElements[ ~(SvLiveArr) ] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
+ 180:	df 91       	pop	r29
+ 182:	cf 91       	pop	r28
+ 184:	1f 91       	pop	r17
+ 186:	0f 91       	pop	r16
+ 188:	ff 90       	pop	r15
+ 18a:	df 90       	pop	r13
+ 18c:	cf 90       	pop	r12
+ 18e:	bf 90       	pop	r11
+ 190:	af 90       	pop	r10
+ 192:	08 95       	ret
 		}
 	}
-	else {  // SvNoteNum > 47
+	else {  // SvNoteNum >= 48, high note version.  notes 48-121.
+		//step one 78K steps along the two or more (2, 4, 8, 16, 32 or 64) sine waves in SvPlayArray[] 
 		
-		SvNoteHighNOTLow[ ~(SvLiveArr) ] = 0xFF;  // true, this is a high note, not a low note
- 1ea:	e0 91 01 05 	lds	r30, 0x0501
- 1ee:	f0 e0       	ldi	r31, 0x00	; 0
- 1f0:	e0 95       	com	r30
- 1f2:	f0 95       	com	r31
- 1f4:	ea 50       	subi	r30, 0x0A	; 10
- 1f6:	fb 4f       	sbci	r31, 0xFB	; 251
- 1f8:	8f ef       	ldi	r24, 0xFF	; 255
- 1fa:	80 83       	st	Z, r24
-		SvNoteFactor[ ~(SvLiveArr) ] = (SvNoteForPlayArray.SvNoteNum - 36) / 12;  // (1 << SvNoteFactor) is number of Sine Wave Cycles in the SvPlayArray
- 1fc:	e0 91 01 05 	lds	r30, 0x0501
- 200:	f0 e0       	ldi	r31, 0x00	; 0
- 202:	e0 95       	com	r30
- 204:	f0 95       	com	r31
- 206:	30 e0       	ldi	r19, 0x00	; 0
- 208:	c9 01       	movw	r24, r18
- 20a:	84 97       	sbiw	r24, 0x24	; 36
- 20c:	6c e0       	ldi	r22, 0x0C	; 12
- 20e:	70 e0       	ldi	r23, 0x00	; 0
- 210:	0e 94 9b 02 	call	0x536	; 0x536 <__divmodhi4>
- 214:	e9 5e       	subi	r30, 0xE9	; 233
- 216:	fa 4f       	sbci	r31, 0xFA	; 250
- 218:	60 83       	st	Z, r22
-		SvCyclesTotal = ( 1 << SvNoteFactor[ ~(SvLiveArr) ] );
- 21a:	e0 91 01 05 	lds	r30, 0x0501
- 21e:	f0 e0       	ldi	r31, 0x00	; 0
- 220:	e0 95       	com	r30
- 222:	f0 95       	com	r31
- 224:	e9 5e       	subi	r30, 0xE9	; 233
- 226:	fa 4f       	sbci	r31, 0xFA	; 250
- 228:	40 81       	ld	r20, Z
-		SvArrayElements[ ~(SvLiveArr) ] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
- 22a:	e0 91 01 05 	lds	r30, 0x0501
- 22e:	f0 e0       	ldi	r31, 0x00	; 0
- 230:	e0 95       	com	r30
- 232:	f0 95       	com	r31
- 234:	22 0f       	add	r18, r18
- 236:	33 1f       	adc	r19, r19
- 238:	20 50       	subi	r18, 0x00	; 0
- 23a:	3f 4f       	sbci	r19, 0xFF	; 255
- 23c:	d9 01       	movw	r26, r18
- 23e:	8c 91       	ld	r24, X
- 240:	ec 50       	subi	r30, 0x0C	; 12
- 242:	fb 4f       	sbci	r31, 0xFB	; 251
- 244:	80 83       	st	Z, r24
-		for (SvArrayCount = 0; SvArrayCount < SvArrayElements[ ~(SvLiveArr) ]; SvArrayCount++) {
- 246:	e0 91 01 05 	lds	r30, 0x0501
- 24a:	f0 e0       	ldi	r31, 0x00	; 0
- 24c:	e0 95       	com	r30
- 24e:	f0 95       	com	r31
- 250:	ec 50       	subi	r30, 0x0C	; 12
- 252:	fb 4f       	sbci	r31, 0xFB	; 251
- 254:	80 81       	ld	r24, Z
- 256:	88 23       	and	r24, r24
- 258:	09 f4       	brne	.+2      	; 0x25c <SfToneGenerator+0x1b6>
- 25a:	b3 cf       	rjmp	.-154    	; 0x1c2 <SfToneGenerator+0x11c>
- 25c:	81 e0       	ldi	r24, 0x01	; 1
- 25e:	90 e0       	ldi	r25, 0x00	; 0
- 260:	02 c0       	rjmp	.+4      	; 0x266 <SfToneGenerator+0x1c0>
- 262:	88 0f       	add	r24, r24
- 264:	99 1f       	adc	r25, r25
- 266:	4a 95       	dec	r20
- 268:	e2 f7       	brpl	.-8      	; 0x262 <SfToneGenerator+0x1bc>
- 26a:	a8 2e       	mov	r10, r24
- 26c:	bb 24       	eor	r11, r11
- 26e:	ee 24       	eor	r14, r14
-			SvPlayArray[ ~(SvLiveArr) ][SvArrayCount] = (SvSineWaveLookup256[ (((SvArrayCount << 8) / SvArrayElements[ ~(SvLiveArr) ]) - (((SvArrayCount * SvCyclesTotal) / SvArrayElements[ ~(SvLiveArr) ]) << (8 - SvNoteFactor[ ~(SvLiveArr) ]))) * SvCyclesTotal] * SvNoteForPlayArray.SvNoteVolume) >> 8;
- 270:	98 e0       	ldi	r25, 0x08	; 8
- 272:	69 2e       	mov	r6, r25
- 274:	71 2c       	mov	r7, r1
- 276:	80 91 01 05 	lds	r24, 0x0501
- 27a:	c8 2e       	mov	r12, r24
- 27c:	dd 24       	eor	r13, r13
- 27e:	c0 94       	com	r12
- 280:	d0 94       	com	r13
- 282:	0e 2d       	mov	r16, r14
- 284:	10 e0       	ldi	r17, 0x00	; 0
- 286:	e0 91 01 05 	lds	r30, 0x0501
- 28a:	f0 e0       	ldi	r31, 0x00	; 0
- 28c:	e0 95       	com	r30
- 28e:	f0 95       	com	r31
- 290:	ec 50       	subi	r30, 0x0C	; 12
- 292:	fb 4f       	sbci	r31, 0xFB	; 251
- 294:	60 81       	ld	r22, Z
- 296:	e0 91 01 05 	lds	r30, 0x0501
- 29a:	f0 e0       	ldi	r31, 0x00	; 0
- 29c:	e0 95       	com	r30
- 29e:	f0 95       	com	r31
- 2a0:	ec 50       	subi	r30, 0x0C	; 12
+		SvNoteHighNOTLow[SvNextLiveArr] = 1;  // set to true, this is a high note, not a low note
+ 194:	e0 91 ad 04 	lds	r30, 0x04AD
+ 198:	f0 e0       	ldi	r31, 0x00	; 0
+ 19a:	e4 58       	subi	r30, 0x84	; 132
+ 19c:	fb 4f       	sbci	r31, 0xFB	; 251
+ 19e:	81 e0       	ldi	r24, 0x01	; 1
+ 1a0:	80 83       	st	Z, r24
+		SvNoteFactor[SvNextLiveArr] = ( (SvNoteForPlayArray.SvNoteNum - 48) / 12 );  // (1 << SvNoteFactor) is number of Sine Wave Cycles in the SvPlayArray
+ 1a2:	e0 91 ad 04 	lds	r30, 0x04AD
+ 1a6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1a8:	26 2f       	mov	r18, r22
+ 1aa:	30 e0       	ldi	r19, 0x00	; 0
+ 1ac:	c9 01       	movw	r24, r18
+ 1ae:	c0 97       	sbiw	r24, 0x30	; 48
+ 1b0:	6c e0       	ldi	r22, 0x0C	; 12
+ 1b2:	70 e0       	ldi	r23, 0x00	; 0
+ 1b4:	0e 94 d1 02 	call	0x5a2	; 0x5a2 <__divmodhi4>
+ 1b8:	ec 57       	subi	r30, 0x7C	; 124
+ 1ba:	fb 4f       	sbci	r31, 0xFB	; 251
+ 1bc:	60 83       	st	Z, r22
+		SvArrayElements[SvNextLiveArr] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
+ 1be:	e0 91 ad 04 	lds	r30, 0x04AD
+ 1c2:	f0 e0       	ldi	r31, 0x00	; 0
+ 1c4:	20 50       	subi	r18, 0x00	; 0
+ 1c6:	3f 4f       	sbci	r19, 0xFF	; 255
+ 1c8:	d9 01       	movw	r26, r18
+ 1ca:	8c 91       	ld	r24, X
+ 1cc:	e6 58       	subi	r30, 0x86	; 134
+ 1ce:	fb 4f       	sbci	r31, 0xFB	; 251
+ 1d0:	80 83       	st	Z, r24
+		for (SvArrayCount = 0; SvArrayCount <= SvArrayElements[SvNextLiveArr]; SvArrayCount++) {
+ 1d2:	e0 91 ad 04 	lds	r30, 0x04AD
+ 1d6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1d8:	e6 58       	subi	r30, 0x86	; 134
+ 1da:	fb 4f       	sbci	r31, 0xFB	; 251
+ 1dc:	e0 81       	ld	r30, Z
+ 1de:	c0 e0       	ldi	r28, 0x00	; 0
+ 1e0:	d0 e0       	ldi	r29, 0x00	; 0
+			temp1 = SvArrayCount << 8;  // temp1 is 16 bit, need 16 bit result
+			temp2 = temp1 / ( SvArrayElements[SvNextLiveArr] + 1 ) ;  // temp2 is intermediate result to make the equation shorter
+			temp3 = SvArrayCount << SvNoteFactor[SvNextLiveArr];  // temp3 is 16 bit, need 16 bit result
+			temp4 = ( temp3 / ( SvArrayElements[SvNextLiveArr] + 1 ) ) << ( 8 - SvNoteFactor[SvNextLiveArr] );  // temp4 is intermediate result to make the equation shorter
+			SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (temp2 - temp4) << SvNoteFactor[SvNextLiveArr] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
+ 1e2:	88 e0       	ldi	r24, 0x08	; 8
+ 1e4:	a8 2e       	mov	r10, r24
+ 1e6:	b1 2c       	mov	r11, r1
+		SvNoteHighNOTLow[SvNextLiveArr] = 1;  // set to true, this is a high note, not a low note
+		SvNoteFactor[SvNextLiveArr] = ( (SvNoteForPlayArray.SvNoteNum - 48) / 12 );  // (1 << SvNoteFactor) is number of Sine Wave Cycles in the SvPlayArray
+		SvArrayElements[SvNextLiveArr] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
+		for (SvArrayCount = 0; SvArrayCount <= SvArrayElements[SvNextLiveArr]; SvArrayCount++) {
+			temp1 = SvArrayCount << 8;  // temp1 is 16 bit, need 16 bit result
+			temp2 = temp1 / ( SvArrayElements[SvNextLiveArr] + 1 ) ;  // temp2 is intermediate result to make the equation shorter
+ 1e8:	e0 91 ad 04 	lds	r30, 0x04AD
+ 1ec:	f0 e0       	ldi	r31, 0x00	; 0
+ 1ee:	e6 58       	subi	r30, 0x86	; 134
+ 1f0:	fb 4f       	sbci	r31, 0xFB	; 251
+ 1f2:	60 81       	ld	r22, Z
+			temp3 = SvArrayCount << SvNoteFactor[SvNextLiveArr];  // temp3 is 16 bit, need 16 bit result
+ 1f4:	e0 91 ad 04 	lds	r30, 0x04AD
+ 1f8:	f0 e0       	ldi	r31, 0x00	; 0
+ 1fa:	ec 57       	subi	r30, 0x7C	; 124
+ 1fc:	fb 4f       	sbci	r31, 0xFB	; 251
+ 1fe:	00 81       	ld	r16, Z
+			temp4 = ( temp3 / ( SvArrayElements[SvNextLiveArr] + 1 ) ) << ( 8 - SvNoteFactor[SvNextLiveArr] );  // temp4 is intermediate result to make the equation shorter
+ 200:	e0 91 ad 04 	lds	r30, 0x04AD
+ 204:	f0 e0       	ldi	r31, 0x00	; 0
+ 206:	e6 58       	subi	r30, 0x86	; 134
+ 208:	fb 4f       	sbci	r31, 0xFB	; 251
+ 20a:	20 81       	ld	r18, Z
+ 20c:	e0 91 ad 04 	lds	r30, 0x04AD
+ 210:	f0 e0       	ldi	r31, 0x00	; 0
+ 212:	ec 57       	subi	r30, 0x7C	; 124
+ 214:	fb 4f       	sbci	r31, 0xFB	; 251
+ 216:	10 81       	ld	r17, Z
+			SvPlayArray[SvNextLiveArr][SvArrayCount] = (SvSineWaveLookup256[ (temp2 - temp4) << SvNoteFactor[SvNextLiveArr] ] * SvNoteForPlayArray.SvNoteVolume) >> 8;
+ 218:	f0 90 ad 04 	lds	r15, 0x04AD
+ 21c:	e0 91 ad 04 	lds	r30, 0x04AD
+ 220:	f0 e0       	ldi	r31, 0x00	; 0
+ 222:	ec 57       	subi	r30, 0x7C	; 124
+ 224:	fb 4f       	sbci	r31, 0xFB	; 251
+ 226:	40 81       	ld	r20, Z
+ 228:	70 e0       	ldi	r23, 0x00	; 0
+ 22a:	6f 5f       	subi	r22, 0xFF	; 255
+ 22c:	7f 4f       	sbci	r23, 0xFF	; 255
+ 22e:	80 e0       	ldi	r24, 0x00	; 0
+ 230:	9c 2f       	mov	r25, r28
+ 232:	0e 94 bd 02 	call	0x57a	; 0x57a <__udivmodhi4>
+ 236:	e6 2f       	mov	r30, r22
+ 238:	f0 e0       	ldi	r31, 0x00	; 0
+ 23a:	30 e0       	ldi	r19, 0x00	; 0
+ 23c:	2f 5f       	subi	r18, 0xFF	; 255
+ 23e:	3f 4f       	sbci	r19, 0xFF	; 255
+ 240:	ce 01       	movw	r24, r28
+ 242:	02 c0       	rjmp	.+4      	; 0x248 <SfToneGenerator+0x1a2>
+ 244:	88 0f       	add	r24, r24
+ 246:	99 1f       	adc	r25, r25
+ 248:	0a 95       	dec	r16
+ 24a:	e2 f7       	brpl	.-8      	; 0x244 <SfToneGenerator+0x19e>
+ 24c:	b9 01       	movw	r22, r18
+ 24e:	0e 94 bd 02 	call	0x57a	; 0x57a <__udivmodhi4>
+ 252:	c5 01       	movw	r24, r10
+ 254:	81 1b       	sub	r24, r17
+ 256:	91 09       	sbc	r25, r1
+ 258:	02 c0       	rjmp	.+4      	; 0x25e <SfToneGenerator+0x1b8>
+ 25a:	66 0f       	add	r22, r22
+ 25c:	77 1f       	adc	r23, r23
+ 25e:	8a 95       	dec	r24
+ 260:	e2 f7       	brpl	.-8      	; 0x25a <SfToneGenerator+0x1b4>
+ 262:	e6 1b       	sub	r30, r22
+ 264:	f1 09       	sbc	r31, r1
+ 266:	02 c0       	rjmp	.+4      	; 0x26c <SfToneGenerator+0x1c6>
+ 268:	ee 0f       	add	r30, r30
+ 26a:	ff 1f       	adc	r31, r31
+ 26c:	4a 95       	dec	r20
+ 26e:	e2 f7       	brpl	.-8      	; 0x268 <SfToneGenerator+0x1c2>
+ 270:	e6 58       	subi	r30, 0x86	; 134
+ 272:	fe 4f       	sbci	r31, 0xFE	; 254
+ 274:	80 81       	ld	r24, Z
+ 276:	90 e0       	ldi	r25, 0x00	; 0
+ 278:	9c 01       	movw	r18, r24
+ 27a:	2c 9d       	mul	r18, r12
+ 27c:	c0 01       	movw	r24, r0
+ 27e:	2d 9d       	mul	r18, r13
+ 280:	90 0d       	add	r25, r0
+ 282:	3c 9d       	mul	r19, r12
+ 284:	90 0d       	add	r25, r0
+ 286:	11 24       	eor	r1, r1
+ 288:	3f 2d       	mov	r19, r15
+ 28a:	20 e0       	ldi	r18, 0x00	; 0
+ 28c:	f9 01       	movw	r30, r18
+ 28e:	ec 0f       	add	r30, r28
+ 290:	fd 1f       	adc	r31, r29
+ 292:	e6 58       	subi	r30, 0x86	; 134
+ 294:	fd 4f       	sbci	r31, 0xFD	; 253
+ 296:	90 83       	st	Z, r25
+		//step one 78K steps along the two or more (2, 4, 8, 16, 32 or 64) sine waves in SvPlayArray[] 
+		
+		SvNoteHighNOTLow[SvNextLiveArr] = 1;  // set to true, this is a high note, not a low note
+		SvNoteFactor[SvNextLiveArr] = ( (SvNoteForPlayArray.SvNoteNum - 48) / 12 );  // (1 << SvNoteFactor) is number of Sine Wave Cycles in the SvPlayArray
+		SvArrayElements[SvNextLiveArr] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
+		for (SvArrayCount = 0; SvArrayCount <= SvArrayElements[SvNextLiveArr]; SvArrayCount++) {
+ 298:	21 96       	adiw	r28, 0x01	; 1
+ 29a:	e0 91 ad 04 	lds	r30, 0x04AD
+ 29e:	f0 e0       	ldi	r31, 0x00	; 0
+ 2a0:	e6 58       	subi	r30, 0x86	; 134
  2a2:	fb 4f       	sbci	r31, 0xFB	; 251
- 2a4:	f0 80       	ld	r15, Z
- 2a6:	e0 91 01 05 	lds	r30, 0x0501
- 2aa:	f0 e0       	ldi	r31, 0x00	; 0
- 2ac:	e0 95       	com	r30
- 2ae:	f0 95       	com	r31
- 2b0:	e9 5e       	subi	r30, 0xE9	; 233
- 2b2:	fa 4f       	sbci	r31, 0xFA	; 250
- 2b4:	40 81       	ld	r20, Z
- 2b6:	80 e0       	ldi	r24, 0x00	; 0
- 2b8:	9e 2d       	mov	r25, r14
- 2ba:	70 e0       	ldi	r23, 0x00	; 0
- 2bc:	0e 94 9b 02 	call	0x536	; 0x536 <__divmodhi4>
- 2c0:	9b 01       	movw	r18, r22
- 2c2:	0a 9d       	mul	r16, r10
- 2c4:	c0 01       	movw	r24, r0
- 2c6:	0b 9d       	mul	r16, r11
- 2c8:	90 0d       	add	r25, r0
- 2ca:	1a 9d       	mul	r17, r10
- 2cc:	90 0d       	add	r25, r0
- 2ce:	11 24       	eor	r1, r1
- 2d0:	6f 2d       	mov	r22, r15
- 2d2:	70 e0       	ldi	r23, 0x00	; 0
- 2d4:	0e 94 9b 02 	call	0x536	; 0x536 <__divmodhi4>
- 2d8:	c3 01       	movw	r24, r6
- 2da:	84 1b       	sub	r24, r20
- 2dc:	91 09       	sbc	r25, r1
- 2de:	02 c0       	rjmp	.+4      	; 0x2e4 <SfToneGenerator+0x23e>
- 2e0:	66 0f       	add	r22, r22
- 2e2:	77 1f       	adc	r23, r23
- 2e4:	8a 95       	dec	r24
- 2e6:	e2 f7       	brpl	.-8      	; 0x2e0 <SfToneGenerator+0x23a>
- 2e8:	26 1b       	sub	r18, r22
- 2ea:	37 0b       	sbc	r19, r23
- 2ec:	2a 9d       	mul	r18, r10
- 2ee:	f0 01       	movw	r30, r0
- 2f0:	2b 9d       	mul	r18, r11
- 2f2:	f0 0d       	add	r31, r0
- 2f4:	3a 9d       	mul	r19, r10
- 2f6:	f0 0d       	add	r31, r0
- 2f8:	11 24       	eor	r1, r1
- 2fa:	ec 50       	subi	r30, 0x0C	; 12
- 2fc:	fe 4f       	sbci	r31, 0xFE	; 254
- 2fe:	80 81       	ld	r24, Z
- 300:	90 e0       	ldi	r25, 0x00	; 0
- 302:	9c 01       	movw	r18, r24
- 304:	28 9d       	mul	r18, r8
- 306:	c0 01       	movw	r24, r0
- 308:	29 9d       	mul	r18, r9
- 30a:	90 0d       	add	r25, r0
- 30c:	38 9d       	mul	r19, r8
- 30e:	90 0d       	add	r25, r0
- 310:	11 24       	eor	r1, r1
- 312:	fc 2d       	mov	r31, r12
- 314:	ee 27       	eor	r30, r30
- 316:	e0 0f       	add	r30, r16
- 318:	f1 1f       	adc	r31, r17
- 31a:	ec 50       	subi	r30, 0x0C	; 12
- 31c:	fd 4f       	sbci	r31, 0xFD	; 253
- 31e:	90 83       	st	Z, r25
-		
-		SvNoteHighNOTLow[ ~(SvLiveArr) ] = 0xFF;  // true, this is a high note, not a low note
-		SvNoteFactor[ ~(SvLiveArr) ] = (SvNoteForPlayArray.SvNoteNum - 36) / 12;  // (1 << SvNoteFactor) is number of Sine Wave Cycles in the SvPlayArray
-		SvCyclesTotal = ( 1 << SvNoteFactor[ ~(SvLiveArr) ] );
-		SvArrayElements[ ~(SvLiveArr) ] = SvNoteWaveLength78K[SvNoteForPlayArray.SvNoteNum];
-		for (SvArrayCount = 0; SvArrayCount < SvArrayElements[ ~(SvLiveArr) ]; SvArrayCount++) {
- 320:	e3 94       	inc	r14
- 322:	e0 91 01 05 	lds	r30, 0x0501
- 326:	f0 e0       	ldi	r31, 0x00	; 0
- 328:	e0 95       	com	r30
- 32a:	f0 95       	com	r31
- 32c:	ec 50       	subi	r30, 0x0C	; 12
- 32e:	fb 4f       	sbci	r31, 0xFB	; 251
- 330:	80 81       	ld	r24, Z
- 332:	e8 16       	cp	r14, r24
- 334:	08 f4       	brcc	.+2      	; 0x338 <SfToneGenerator+0x292>
- 336:	9f cf       	rjmp	.-194    	; 0x276 <SfToneGenerator+0x1d0>
- 338:	44 cf       	rjmp	.-376    	; 0x1c2 <SfToneGenerator+0x11c>
+ 2a4:	80 81       	ld	r24, Z
+ 2a6:	90 e0       	ldi	r25, 0x00	; 0
+ 2a8:	8c 17       	cp	r24, r28
+ 2aa:	9d 07       	cpc	r25, r29
+ 2ac:	08 f0       	brcs	.+2      	; 0x2b0 <SfToneGenerator+0x20a>
+ 2ae:	9c cf       	rjmp	.-200    	; 0x1e8 <SfToneGenerator+0x142>
+ 2b0:	67 cf       	rjmp	.-306    	; 0x180 <SfToneGenerator+0xda>
 
-0000033a <Start_Timer0_PWM>:
+000002b2 <Start_Timer0_PWM>:
 	}
 }
 
 void Start_Timer0_PWM (void) {
 	
 	DDRD = (1 << DDD6);  // set OC0A PWM pin as output (PD6, pin 12)
- 33a:	80 e4       	ldi	r24, 0x40	; 64
- 33c:	8a b9       	out	0x0a, r24	; 10
+ 2b2:	80 e4       	ldi	r24, 0x40	; 64
+ 2b4:	8a b9       	out	0x0a, r24	; 10
 	TCCR0A |= (1 << WGM01) | (1 << WGM00);  // set timer 0 for Fast PWM mode
- 33e:	84 b5       	in	r24, 0x24	; 36
- 340:	83 60       	ori	r24, 0x03	; 3
- 342:	84 bd       	out	0x24, r24	; 36
+ 2b6:	84 b5       	in	r24, 0x24	; 36
+ 2b8:	83 60       	ori	r24, 0x03	; 3
+ 2ba:	84 bd       	out	0x24, r24	; 36
 	TCCR0A |= (1 << COM0A1);  // Clear OC0A on Compare Match, set OC0A at BOTTOM
- 344:	84 b5       	in	r24, 0x24	; 36
- 346:	80 68       	ori	r24, 0x80	; 128
- 348:	84 bd       	out	0x24, r24	; 36
+ 2bc:	84 b5       	in	r24, 0x24	; 36
+ 2be:	80 68       	ori	r24, 0x80	; 128
+ 2c0:	84 bd       	out	0x24, r24	; 36
 	TIMSK0 |= (1 << TOIE0);  // Enable PWM overflow interrupt, REMEMBER TO START ALL INTERRUPTS sei(); 
- 34a:	ee e6       	ldi	r30, 0x6E	; 110
- 34c:	f0 e0       	ldi	r31, 0x00	; 0
- 34e:	80 81       	ld	r24, Z
- 350:	81 60       	ori	r24, 0x01	; 1
- 352:	80 83       	st	Z, r24
+ 2c2:	ee e6       	ldi	r30, 0x6E	; 110
+ 2c4:	f0 e0       	ldi	r31, 0x00	; 0
+ 2c6:	80 81       	ld	r24, Z
+ 2c8:	81 60       	ori	r24, 0x01	; 1
+ 2ca:	80 83       	st	Z, r24
 	OCR0A = 0;  // set Output Compare Register A to 0 (one cycle on per 256)
- 354:	17 bc       	out	0x27, r1	; 39
+ 2cc:	17 bc       	out	0x27, r1	; 39
 	//OCR0A = 0x00;  // test for designing and verifying the transistor amplifier circuit
 	TCCR0B |= (1 << CS00);  // start PWM timer with no prescaler
- 356:	85 b5       	in	r24, 0x25	; 37
- 358:	81 60       	ori	r24, 0x01	; 1
- 35a:	85 bd       	out	0x25, r24	; 37
+ 2ce:	85 b5       	in	r24, 0x25	; 37
+ 2d0:	81 60       	ori	r24, 0x01	; 1
+ 2d2:	85 bd       	out	0x25, r24	; 37
 }
- 35c:	08 95       	ret
+ 2d4:	08 95       	ret
 
-0000035e <main>:
+000002d6 <main>:
 struct NoteStruct SvNoteForPlayArray;
 
 void SfToneGenerator (struct NoteStruct SvNoteForPlayArray);
 void Start_Timer0_PWM (void);
 
 int main (void) {
- 35e:	1f 93       	push	r17
-	uint16_t SvMusicTempoBPMxSub;
-	uint8_t SvNoteStructNum;
-		
-	//avr-libc assures us that variables will automatically be initiallized to zero
-	
-	SvStartCalculatingNextNote = 1;
- 360:	81 e0       	ldi	r24, 0x01	; 1
- 362:	80 93 20 05 	sts	0x0520, r24
-	
-	// the smallest value for note duration should be no less than 1/305 of a second, 256 "78K cycles".
-	// this minimum can be increased up to 512 "78K cycles", to work out various BPM settings.
-	// beginning example 120 BPM with 128th notes.  1/256 of a second minimum note duration, this is 305 "78K cycles".
-	SvMusicTempoBPMxSub = 120 * 128;  // beats per minute times number of fractional note durations, if using a faster than 120 BPM, use less than 128 fractional note durations
-	SvDurationResolution[SvLiveArr] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub );  // 4,687,500 = 78,125 * 60
- 366:	e0 91 01 05 	lds	r30, 0x0501
- 36a:	f0 e0       	ldi	r31, 0x00	; 0
- 36c:	ee 0f       	add	r30, r30
- 36e:	ff 1f       	adc	r31, r31
- 370:	e6 50       	subi	r30, 0x06	; 6
- 372:	fb 4f       	sbci	r31, 0xFB	; 251
- 374:	81 e3       	ldi	r24, 0x31	; 49
- 376:	91 e0       	ldi	r25, 0x01	; 1
- 378:	91 83       	std	Z+1, r25	; 0x01
- 37a:	80 83       	st	Z, r24
-	SvDurationResolution[ ~(SvLiveArr) ] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub );  // 4,687,500 = 78,125 * 60
- 37c:	e0 91 01 05 	lds	r30, 0x0501
- 380:	f0 e0       	ldi	r31, 0x00	; 0
- 382:	e0 95       	com	r30
- 384:	f0 95       	com	r31
- 386:	ee 0f       	add	r30, r30
- 388:	ff 1f       	adc	r31, r31
- 38a:	e6 50       	subi	r30, 0x06	; 6
- 38c:	fb 4f       	sbci	r31, 0xFB	; 251
- 38e:	91 83       	std	Z+1, r25	; 0x01
- 390:	80 83       	st	Z, r24
+ 2d6:	1f 93       	push	r17
+	//SvDurationResolution[0] = 511;
+	//SvDurationResolution[1] = 511;
+	// END TEST
 	//SvDurationResolution = 2441;  // temp test for math, 2441 is 32 per second ( 78,125 PWM cycles-per-second * 60 seconds ) / (120BPM * 16) for 16th notes resolution
 	//SvDurationResolution = 305;  // temp test for math, 305 is 256 per second ( 78,125 PWM cycles-per-second * 60 seconds ) / (120 BPM * 128) for 128th notes resolution
+	SvDurationResolution[0] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub ) - 1 ;  // number of PWM duty cycles in a minute is 4,687,500 = 78,125 * 60
+ 2d8:	81 e6       	ldi	r24, 0x61	; 97
+ 2da:	92 e0       	ldi	r25, 0x02	; 2
+ 2dc:	90 93 81 04 	sts	0x0481, r25
+ 2e0:	80 93 80 04 	sts	0x0480, r24
+	SvDurationResolution[1] = ( (uint32_t)4687500 / SvMusicTempoBPMxSub ) - 1 ;  // number of PWM duty cycles in a minute is 4,687,500 = 78,125 * 60
+ 2e4:	90 93 83 04 	sts	0x0483, r25
+ 2e8:	80 93 82 04 	sts	0x0482, r24
 	
-	SvNotesToPlay[0].SvNoteNum = 45;
- 392:	8d e2       	ldi	r24, 0x2D	; 45
- 394:	80 93 02 05 	sts	0x0502, r24
-	SvNotesToPlay[0].SvNoteDuration = 64;
- 398:	20 e4       	ldi	r18, 0x40	; 64
- 39a:	30 e0       	ldi	r19, 0x00	; 0
- 39c:	30 93 04 05 	sts	0x0504, r19
- 3a0:	20 93 03 05 	sts	0x0503, r18
+	
+	SvNumberOfNotesToPlay = 7;  // start counting from 0 here
+ 2ec:	87 e0       	ldi	r24, 0x07	; 7
+ 2ee:	80 93 af 04 	sts	0x04AF, r24
+	
+	SvNotesToPlay[0].SvNoteNum = 3;
+ 2f2:	83 e0       	ldi	r24, 0x03	; 3
+ 2f4:	80 93 88 04 	sts	0x0488, r24
+	SvNotesToPlay[0].SvNoteDuration = 31;
+ 2f8:	9f e1       	ldi	r25, 0x1F	; 31
+ 2fa:	90 93 89 04 	sts	0x0489, r25
 	SvNotesToPlay[0].SvNoteVolume = 127;
- 3a4:	4f e7       	ldi	r20, 0x7F	; 127
- 3a6:	50 e0       	ldi	r21, 0x00	; 0
- 3a8:	50 93 06 05 	sts	0x0506, r21
- 3ac:	40 93 05 05 	sts	0x0505, r20
+ 2fe:	2f e7       	ldi	r18, 0x7F	; 127
+ 300:	30 e0       	ldi	r19, 0x00	; 0
+ 302:	30 93 8b 04 	sts	0x048B, r19
+ 306:	20 93 8a 04 	sts	0x048A, r18
 	
-	SvNotesToPlay[1].SvNoteNum = 48;
- 3b0:	80 e3       	ldi	r24, 0x30	; 48
- 3b2:	80 93 07 05 	sts	0x0507, r24
-	SvNotesToPlay[1].SvNoteDuration = 64;
- 3b6:	30 93 09 05 	sts	0x0509, r19
- 3ba:	20 93 08 05 	sts	0x0508, r18
+	SvNotesToPlay[1].SvNoteNum = 15;
+ 30a:	8f e0       	ldi	r24, 0x0F	; 15
+ 30c:	80 93 8c 04 	sts	0x048C, r24
+	SvNotesToPlay[1].SvNoteDuration = 31;
+ 310:	90 93 8d 04 	sts	0x048D, r25
 	SvNotesToPlay[1].SvNoteVolume = 127;
- 3be:	50 93 0b 05 	sts	0x050B, r21
- 3c2:	40 93 0a 05 	sts	0x050A, r20
+ 314:	30 93 8f 04 	sts	0x048F, r19
+ 318:	20 93 8e 04 	sts	0x048E, r18
 	
-	SvNotesToPlay[2].SvNoteNum = 51;
- 3c6:	83 e3       	ldi	r24, 0x33	; 51
- 3c8:	80 93 0c 05 	sts	0x050C, r24
-	SvNotesToPlay[2].SvNoteDuration = 64;
- 3cc:	30 93 0e 05 	sts	0x050E, r19
- 3d0:	20 93 0d 05 	sts	0x050D, r18
+	SvNotesToPlay[2].SvNoteNum = 27;
+ 31c:	8b e1       	ldi	r24, 0x1B	; 27
+ 31e:	80 93 90 04 	sts	0x0490, r24
+	SvNotesToPlay[2].SvNoteDuration = 31;
+ 322:	90 93 91 04 	sts	0x0491, r25
 	SvNotesToPlay[2].SvNoteVolume = 127;
- 3d4:	50 93 10 05 	sts	0x0510, r21
- 3d8:	40 93 0f 05 	sts	0x050F, r20
+ 326:	30 93 93 04 	sts	0x0493, r19
+ 32a:	20 93 92 04 	sts	0x0492, r18
 	
-	SvNotesToPlay[3].SvNoteNum = 54;
- 3dc:	86 e3       	ldi	r24, 0x36	; 54
- 3de:	80 93 11 05 	sts	0x0511, r24
-	SvNotesToPlay[3].SvNoteDuration = 64;
- 3e2:	30 93 13 05 	sts	0x0513, r19
- 3e6:	20 93 12 05 	sts	0x0512, r18
+	SvNotesToPlay[3].SvNoteNum = 39;
+ 32e:	87 e2       	ldi	r24, 0x27	; 39
+ 330:	80 93 94 04 	sts	0x0494, r24
+	SvNotesToPlay[3].SvNoteDuration = 31;
+ 334:	90 93 95 04 	sts	0x0495, r25
 	SvNotesToPlay[3].SvNoteVolume = 127;
- 3ea:	50 93 15 05 	sts	0x0515, r21
- 3ee:	40 93 14 05 	sts	0x0514, r20
+ 338:	30 93 97 04 	sts	0x0497, r19
+ 33c:	20 93 96 04 	sts	0x0496, r18
 	
+	SvNotesToPlay[4].SvNoteNum = 51;
+ 340:	83 e3       	ldi	r24, 0x33	; 51
+ 342:	80 93 98 04 	sts	0x0498, r24
+	SvNotesToPlay[4].SvNoteDuration = 31;
+ 346:	90 93 99 04 	sts	0x0499, r25
+	SvNotesToPlay[4].SvNoteVolume = 127;
+ 34a:	30 93 9b 04 	sts	0x049B, r19
+ 34e:	20 93 9a 04 	sts	0x049A, r18
+	
+	SvNotesToPlay[5].SvNoteNum = 63;
+ 352:	8f e3       	ldi	r24, 0x3F	; 63
+ 354:	80 93 9c 04 	sts	0x049C, r24
+	SvNotesToPlay[5].SvNoteDuration = 31;
+ 358:	90 93 9d 04 	sts	0x049D, r25
+	SvNotesToPlay[5].SvNoteVolume = 127;
+ 35c:	30 93 9f 04 	sts	0x049F, r19
+ 360:	20 93 9e 04 	sts	0x049E, r18
+	
+	SvNotesToPlay[6].SvNoteNum = 75;
+ 364:	8b e4       	ldi	r24, 0x4B	; 75
+ 366:	80 93 a0 04 	sts	0x04A0, r24
+	SvNotesToPlay[6].SvNoteDuration = 31;
+ 36a:	90 93 a1 04 	sts	0x04A1, r25
+	SvNotesToPlay[6].SvNoteVolume = 127;
+ 36e:	30 93 a3 04 	sts	0x04A3, r19
+ 372:	20 93 a2 04 	sts	0x04A2, r18
+	
+	SvNotesToPlay[7].SvNoteNum = 87;
+ 376:	87 e5       	ldi	r24, 0x57	; 87
+ 378:	80 93 a4 04 	sts	0x04A4, r24
+	SvNotesToPlay[7].SvNoteDuration = 31;
+ 37c:	90 93 a5 04 	sts	0x04A5, r25
+	SvNotesToPlay[7].SvNoteVolume = 127;
+ 380:	30 93 a7 04 	sts	0x04A7, r19
+ 384:	20 93 a6 04 	sts	0x04A6, r18
+	
+	SvLiveArr = 1;
+ 388:	11 e0       	ldi	r17, 0x01	; 1
+ 38a:	10 93 87 04 	sts	0x0487, r17
+	SvNextLiveArr = 0;
+ 38e:	10 92 ad 04 	sts	0x04AD, r1
+	SfToneGenerator(SvNotesToPlay[0]);  // fill the SvPlayArray[0] with useful data
+ 392:	60 91 88 04 	lds	r22, 0x0488
+ 396:	70 91 89 04 	lds	r23, 0x0489
+ 39a:	80 91 8a 04 	lds	r24, 0x048A
+ 39e:	90 91 8b 04 	lds	r25, 0x048B
+ 3a2:	0e 94 53 00 	call	0xa6	; 0xa6 <SfToneGenerator>
+	SvLiveArr = 0;
+ 3a6:	10 92 87 04 	sts	0x0487, r1
+	SvNextLiveArr = 1;
+ 3aa:	10 93 ad 04 	sts	0x04AD, r17
+	
+	SvNoteStructNum = 1;
+	SvResetGoToNextNote = 0;
+ 3ae:	10 92 a9 04 	sts	0x04A9, r1
+	SvStartCalculatingNextNote = 1;
+ 3b2:	10 93 b4 04 	sts	0x04B4, r17
+	
+	SvNextPWMValue = 127;
+ 3b6:	8f e7       	ldi	r24, 0x7F	; 127
+ 3b8:	80 93 aa 04 	sts	0x04AA, r24
+	SvArrayLiveCounter = 0;
+ 3bc:	10 92 a8 04 	sts	0x04A8, r1
+	SvFactor78KCounter = 0;
+ 3c0:	10 92 ae 04 	sts	0x04AE, r1
+	SvLive78KCyclesCounter = 0;
+ 3c4:	10 92 ac 04 	sts	0x04AC, r1
+ 3c8:	10 92 ab 04 	sts	0x04AB, r1
+	SvLiveNoteDurationCounter = 0;
+ 3cc:	10 92 86 04 	sts	0x0486, r1
 	
 	sei();  // DUH!
- 3f2:	78 94       	sei
+ 3d0:	78 94       	sei
 	Start_Timer0_PWM ();
- 3f4:	0e 94 9d 01 	call	0x33a	; 0x33a <Start_Timer0_PWM>
+ 3d2:	0e 94 59 01 	call	0x2b2	; 0x2b2 <Start_Timer0_PWM>
+	
 	while (1) {
 		
-		// set this up differently, wait until (SvStartCalculatingNextNote = 1) to call SfToneGenerator
-		// put the notes into an array of structs
-		
 		if (SvStartCalculatingNextNote == 1) {
- 3f8:	80 91 20 05 	lds	r24, 0x0520
- 3fc:	81 30       	cpi	r24, 0x01	; 1
- 3fe:	e1 f7       	brne	.-8      	; 0x3f8 <main+0x9a>
+ 3d6:	80 91 b4 04 	lds	r24, 0x04B4
+ 3da:	81 30       	cpi	r24, 0x01	; 1
+ 3dc:	e1 f7       	brne	.-8      	; 0x3d6 <main+0x100>
+			SfToneGenerator(SvNotesToPlay[SvNoteStructNum]);
+ 3de:	e1 2f       	mov	r30, r17
+ 3e0:	f0 e0       	ldi	r31, 0x00	; 0
+ 3e2:	ee 0f       	add	r30, r30
+ 3e4:	ff 1f       	adc	r31, r31
+ 3e6:	ee 0f       	add	r30, r30
+ 3e8:	ff 1f       	adc	r31, r31
+ 3ea:	e8 57       	subi	r30, 0x78	; 120
+ 3ec:	fb 4f       	sbci	r31, 0xFB	; 251
+ 3ee:	60 81       	ld	r22, Z
+ 3f0:	71 81       	ldd	r23, Z+1	; 0x01
+ 3f2:	82 81       	ldd	r24, Z+2	; 0x02
+ 3f4:	93 81       	ldd	r25, Z+3	; 0x03
+ 3f6:	0e 94 53 00 	call	0xa6	; 0xa6 <SfToneGenerator>
 			if (SvNoteStructNum >= SvNumberOfNotesToPlay) {
- 400:	80 91 fe 04 	lds	r24, 0x04FE
- 404:	18 17       	cp	r17, r24
- 406:	c0 f0       	brcs	.+48     	; 0x438 <main+0xda>
- 408:	80 e0       	ldi	r24, 0x00	; 0
- 40a:	90 e0       	ldi	r25, 0x00	; 0
- 40c:	11 e0       	ldi	r17, 0x01	; 1
+ 3fa:	80 91 af 04 	lds	r24, 0x04AF
+ 3fe:	18 17       	cp	r17, r24
+ 400:	10 f0       	brcs	.+4      	; 0x406 <main+0x130>
+	SvFactor78KCounter = 0;
+	SvLive78KCyclesCounter = 0;
+	SvLiveNoteDurationCounter = 0;
+	
+	sei();  // DUH!
+	Start_Timer0_PWM ();
+ 402:	10 e0       	ldi	r17, 0x00	; 0
+ 404:	e8 cf       	rjmp	.-48     	; 0x3d6 <main+0x100>
+		if (SvStartCalculatingNextNote == 1) {
+			SfToneGenerator(SvNotesToPlay[SvNoteStructNum]);
+			if (SvNoteStructNum >= SvNumberOfNotesToPlay) {
 				SvNoteStructNum = 0;  // start over at beginning of list
 			}
-			SvArrayLiveCounter = 0;
- 40e:	10 92 16 05 	sts	0x0516, r1
-			SvFactor78KCounter = 0;
- 412:	10 92 19 05 	sts	0x0519, r1
-			SfToneGenerator(SvNotesToPlay[SvNoteStructNum]);
- 416:	fc 01       	movw	r30, r24
- 418:	ee 0f       	add	r30, r30
- 41a:	ff 1f       	adc	r31, r31
- 41c:	ee 0f       	add	r30, r30
- 41e:	ff 1f       	adc	r31, r31
- 420:	e8 0f       	add	r30, r24
- 422:	f9 1f       	adc	r31, r25
- 424:	ee 5f       	subi	r30, 0xFE	; 254
- 426:	fa 4f       	sbci	r31, 0xFA	; 250
- 428:	40 81       	ld	r20, Z
- 42a:	51 81       	ldd	r21, Z+1	; 0x01
- 42c:	62 81       	ldd	r22, Z+2	; 0x02
- 42e:	73 81       	ldd	r23, Z+3	; 0x03
- 430:	84 81       	ldd	r24, Z+4	; 0x04
- 432:	0e 94 53 00 	call	0xa6	; 0xa6 <SfToneGenerator>
- 436:	e0 cf       	rjmp	.-64     	; 0x3f8 <main+0x9a>
-		
-		// set this up differently, wait until (SvStartCalculatingNextNote = 1) to call SfToneGenerator
-		// put the notes into an array of structs
-		
-		if (SvStartCalculatingNextNote == 1) {
-			if (SvNoteStructNum >= SvNumberOfNotesToPlay) {
- 438:	81 2f       	mov	r24, r17
- 43a:	90 e0       	ldi	r25, 0x00	; 0
- 43c:	1f 5f       	subi	r17, 0xFF	; 255
- 43e:	e7 cf       	rjmp	.-50     	; 0x40e <main+0xb0>
+			else SvNoteStructNum++;
+ 406:	1f 5f       	subi	r17, 0xFF	; 255
+ 408:	e6 cf       	rjmp	.-52     	; 0x3d6 <main+0x100>
 
-00000440 <__vector_16>:
+0000040a <__vector_16>:
 	OCR0A = 0;  // set Output Compare Register A to 0 (one cycle on per 256)
 	//OCR0A = 0x00;  // test for designing and verifying the transistor amplifier circuit
 	TCCR0B |= (1 << CS00);  // start PWM timer with no prescaler
 }
 
 ISR(TIMER0_OVF_vect) {
- 440:	1f 92       	push	r1
- 442:	0f 92       	push	r0
- 444:	0f b6       	in	r0, 0x3f	; 63
- 446:	0f 92       	push	r0
- 448:	11 24       	eor	r1, r1
- 44a:	2f 93       	push	r18
- 44c:	3f 93       	push	r19
- 44e:	4f 93       	push	r20
- 450:	8f 93       	push	r24
- 452:	9f 93       	push	r25
- 454:	ef 93       	push	r30
- 456:	ff 93       	push	r31
+ 40a:	1f 92       	push	r1
+ 40c:	0f 92       	push	r0
+ 40e:	0f b6       	in	r0, 0x3f	; 63
+ 410:	0f 92       	push	r0
+ 412:	11 24       	eor	r1, r1
+ 414:	2f 93       	push	r18
+ 416:	3f 93       	push	r19
+ 418:	4f 93       	push	r20
+ 41a:	8f 93       	push	r24
+ 41c:	9f 93       	push	r25
+ 41e:	ef 93       	push	r30
+ 420:	ff 93       	push	r31
 	
-	if (SvNoteHighNOTLow[SvLiveArr]) {  // this is a High note, notes > 47.  count through an element in the SvPlayArray[] for every 78k cycle.
- 458:	e0 91 01 05 	lds	r30, 0x0501
- 45c:	f0 e0       	ldi	r31, 0x00	; 0
- 45e:	ea 50       	subi	r30, 0x0A	; 10
- 460:	fb 4f       	sbci	r31, 0xFB	; 251
- 462:	80 81       	ld	r24, Z
- 464:	88 23       	and	r24, r24
- 466:	09 f0       	breq	.+2      	; 0x46a <__vector_16+0x2a>
- 468:	48 c0       	rjmp	.+144    	; 0x4fa <__vector_16+0xba>
-			SvStartCalculatingNextNote = 0;  // flag indicates it's time to start calculating the new next note SvPlayArray
+	OCR0A = SvNextPWMValue;  // all that for this, put the PWM value in the timer register
+ 422:	80 91 aa 04 	lds	r24, 0x04AA
+ 426:	87 bd       	out	0x27, r24	; 39
+	SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
+ 428:	80 91 87 04 	lds	r24, 0x0487
+ 42c:	90 91 a8 04 	lds	r25, 0x04A8
+ 430:	f8 2f       	mov	r31, r24
+ 432:	e0 e0       	ldi	r30, 0x00	; 0
+ 434:	e9 0f       	add	r30, r25
+ 436:	f1 1d       	adc	r31, r1
+ 438:	e6 58       	subi	r30, 0x86	; 134
+ 43a:	fd 4f       	sbci	r31, 0xFD	; 253
+ 43c:	80 81       	ld	r24, Z
+ 43e:	80 93 aa 04 	sts	0x04AA, r24
+	if ( SvNoteHighNOTLow[SvLiveArr] == 1 ) {  // this is a High note, notes > 59.  count through an element in the SvPlayArray[] for every 78k cycle.
+ 442:	e0 91 87 04 	lds	r30, 0x0487
+ 446:	f0 e0       	ldi	r31, 0x00	; 0
+ 448:	e4 58       	subi	r30, 0x84	; 132
+ 44a:	fb 4f       	sbci	r31, 0xFB	; 251
+ 44c:	80 81       	ld	r24, Z
+ 44e:	81 30       	cpi	r24, 0x01	; 1
+ 450:	09 f4       	brne	.+2      	; 0x454 <__vector_16+0x4a>
+ 452:	6b c0       	rjmp	.+214    	; 0x52a <__vector_16+0x120>
+			SvArrayLiveCounter = 0;
 		}
+		else SvArrayLiveCounter++;
 	}
-	else {  // this is a low note, notes < 48.  count through an element in the SvPlayArray[] for every (1 << SvNoteFactor) times 78k cycle.
-		
-		if (SvFactor78KCounter >= (1 << SvNoteFactor[SvLiveArr] ) ) {
- 46a:	20 91 19 05 	lds	r18, 0x0519
- 46e:	e0 91 01 05 	lds	r30, 0x0501
- 472:	f0 e0       	ldi	r31, 0x00	; 0
- 474:	e9 5e       	subi	r30, 0xE9	; 233
- 476:	fa 4f       	sbci	r31, 0xFA	; 250
- 478:	40 81       	ld	r20, Z
- 47a:	30 e0       	ldi	r19, 0x00	; 0
- 47c:	81 e0       	ldi	r24, 0x01	; 1
- 47e:	90 e0       	ldi	r25, 0x00	; 0
- 480:	02 c0       	rjmp	.+4      	; 0x486 <__vector_16+0x46>
- 482:	88 0f       	add	r24, r24
- 484:	99 1f       	adc	r25, r25
- 486:	4a 95       	dec	r20
- 488:	e2 f7       	brpl	.-8      	; 0x482 <__vector_16+0x42>
- 48a:	28 17       	cp	r18, r24
- 48c:	39 07       	cpc	r19, r25
- 48e:	9c f5       	brge	.+102    	; 0x4f6 <__vector_16+0xb6>
+	else {  // this is a low note, notes <= 59.  count through an element in the SvPlayArray[] for every (1 << SvNoteFactor) times 78k cycle.
+		if ( SvFactor78KCounter >= ( ( 1 << SvNoteFactor[SvLiveArr] ) - 1 ) ) {
+ 454:	20 91 ae 04 	lds	r18, 0x04AE
+ 458:	e0 91 87 04 	lds	r30, 0x0487
+ 45c:	f0 e0       	ldi	r31, 0x00	; 0
+ 45e:	ec 57       	subi	r30, 0x7C	; 124
+ 460:	fb 4f       	sbci	r31, 0xFB	; 251
+ 462:	40 81       	ld	r20, Z
+ 464:	30 e0       	ldi	r19, 0x00	; 0
+ 466:	81 e0       	ldi	r24, 0x01	; 1
+ 468:	90 e0       	ldi	r25, 0x00	; 0
+ 46a:	02 c0       	rjmp	.+4      	; 0x470 <__vector_16+0x66>
+ 46c:	88 0f       	add	r24, r24
+ 46e:	99 1f       	adc	r25, r25
+ 470:	4a 95       	dec	r20
+ 472:	e2 f7       	brpl	.-8      	; 0x46c <__vector_16+0x62>
+ 474:	01 97       	sbiw	r24, 0x01	; 1
+ 476:	28 17       	cp	r18, r24
+ 478:	39 07       	cpc	r19, r25
+ 47a:	0c f0       	brlt	.+2      	; 0x47e <__vector_16+0x74>
+ 47c:	54 c0       	rjmp	.+168    	; 0x526 <__vector_16+0x11c>
+			if (SvArrayLiveCounter >= SvArrayElements[SvLiveArr] ) {
 				SvArrayLiveCounter = 0;
 			}
-			OCR0A = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
-			SvArrayLiveCounter++;
+			else SvArrayLiveCounter++;
 		}
-		if (SvLive78kCyclesCounter >= SvDurationResolution[SvLiveArr] ) {
- 490:	80 91 1f 05 	lds	r24, 0x051F
- 494:	e0 91 01 05 	lds	r30, 0x0501
- 498:	f0 e0       	ldi	r31, 0x00	; 0
- 49a:	ee 0f       	add	r30, r30
- 49c:	ff 1f       	adc	r31, r31
- 49e:	e6 50       	subi	r30, 0x06	; 6
- 4a0:	fb 4f       	sbci	r31, 0xFB	; 251
- 4a2:	20 81       	ld	r18, Z
- 4a4:	31 81       	ldd	r19, Z+1	; 0x01
- 4a6:	90 e0       	ldi	r25, 0x00	; 0
- 4a8:	82 17       	cp	r24, r18
- 4aa:	93 07       	cpc	r25, r19
- 4ac:	38 f0       	brcs	.+14     	; 0x4bc <__vector_16+0x7c>
-			SvLive78kCyclesCounter = 0;
- 4ae:	10 92 1f 05 	sts	0x051F, r1
-			SvLiveNoteDurationCounter++;
- 4b2:	80 91 00 05 	lds	r24, 0x0500
- 4b6:	8f 5f       	subi	r24, 0xFF	; 255
- 4b8:	80 93 00 05 	sts	0x0500, r24
-		}
+		else SvFactor78KCounter++;
+ 47e:	80 91 ae 04 	lds	r24, 0x04AE
+ 482:	8f 5f       	subi	r24, 0xFF	; 255
+ 484:	80 93 ae 04 	sts	0x04AE, r24
+	}
+	if (SvLive78KCyclesCounter >= SvDurationResolution[SvLiveArr] ) {
+ 488:	e0 91 87 04 	lds	r30, 0x0487
+ 48c:	f0 e0       	ldi	r31, 0x00	; 0
+ 48e:	ee 0f       	add	r30, r30
+ 490:	ff 1f       	adc	r31, r31
+ 492:	e0 58       	subi	r30, 0x80	; 128
+ 494:	fb 4f       	sbci	r31, 0xFB	; 251
+ 496:	20 81       	ld	r18, Z
+ 498:	31 81       	ldd	r19, Z+1	; 0x01
+ 49a:	80 91 ab 04 	lds	r24, 0x04AB
+ 49e:	90 91 ac 04 	lds	r25, 0x04AC
+ 4a2:	82 17       	cp	r24, r18
+ 4a4:	93 07       	cpc	r25, r19
+ 4a6:	08 f4       	brcc	.+2      	; 0x4aa <__vector_16+0xa0>
+ 4a8:	53 c0       	rjmp	.+166    	; 0x550 <__vector_16+0x146>
+		SvLive78KCyclesCounter = 0;
+ 4aa:	10 92 ac 04 	sts	0x04AC, r1
+ 4ae:	10 92 ab 04 	sts	0x04AB, r1
 		if (SvLiveNoteDurationCounter >= SvArrNoteDuration[SvLiveArr] ) {
- 4bc:	e0 91 01 05 	lds	r30, 0x0501
- 4c0:	f0 e0       	ldi	r31, 0x00	; 0
- 4c2:	e8 50       	subi	r30, 0x08	; 8
- 4c4:	fb 4f       	sbci	r31, 0xFB	; 251
- 4c6:	90 81       	ld	r25, Z
- 4c8:	80 91 00 05 	lds	r24, 0x0500
- 4cc:	89 17       	cp	r24, r25
- 4ce:	38 f0       	brcs	.+14     	; 0x4de <__vector_16+0x9e>
-			SvLiveArr = ~(SvLiveArr);  // toggle to the other array, it's now the "live" array being "played"
- 4d0:	80 91 01 05 	lds	r24, 0x0501
- 4d4:	80 95       	com	r24
- 4d6:	80 93 01 05 	sts	0x0501, r24
-			SvStartCalculatingNextNote = 0;  // flag indicates it's time to start calculating the new next note SvPlayArray
- 4da:	10 92 20 05 	sts	0x0520, r1
+ 4b2:	e0 91 87 04 	lds	r30, 0x0487
+ 4b6:	f0 e0       	ldi	r31, 0x00	; 0
+ 4b8:	e2 58       	subi	r30, 0x82	; 130
+ 4ba:	fb 4f       	sbci	r31, 0xFB	; 251
+ 4bc:	90 81       	ld	r25, Z
+ 4be:	80 91 86 04 	lds	r24, 0x0486
+ 4c2:	89 17       	cp	r24, r25
+ 4c4:	08 f4       	brcc	.+2      	; 0x4c8 <__vector_16+0xbe>
+ 4c6:	4e c0       	rjmp	.+156    	; 0x564 <__vector_16+0x15a>
+			SvLiveNoteDurationCounter = 0;
+ 4c8:	10 92 86 04 	sts	0x0486, r1
+			SvResetGoToNextNote = 1;
+ 4cc:	81 e0       	ldi	r24, 0x01	; 1
+ 4ce:	80 93 a9 04 	sts	0x04A9, r24
+		}
+		else SvLiveNoteDurationCounter++;
+	}
+	else SvLive78KCyclesCounter++;
+	
+	if (SvResetGoToNextNote > 0 ) {  // reset the counter variables and change to the next note, swap SvLiveArr and SvNextLiveArr settings
+ 4d2:	80 91 a9 04 	lds	r24, 0x04A9
+ 4d6:	88 23       	and	r24, r24
+ 4d8:	d1 f0       	breq	.+52     	; 0x50e <__vector_16+0x104>
+		SvResetGoToNextNote = 0;
+ 4da:	10 92 a9 04 	sts	0x04A9, r1
+		SvNextPWMValue = 127;
+ 4de:	8f e7       	ldi	r24, 0x7F	; 127
+ 4e0:	80 93 aa 04 	sts	0x04AA, r24
+		SvArrayLiveCounter = 0;
+ 4e4:	10 92 a8 04 	sts	0x04A8, r1
+		SvLive78KCyclesCounter = 0;
+ 4e8:	10 92 ac 04 	sts	0x04AC, r1
+ 4ec:	10 92 ab 04 	sts	0x04AB, r1
+		SvLiveNoteDurationCounter = 0;
+ 4f0:	10 92 86 04 	sts	0x0486, r1
+		SvFactor78KCounter = 0;
+ 4f4:	10 92 ae 04 	sts	0x04AE, r1
+		SvStartCalculatingNextNote = 1;  // flag indicates it's time to start calculating the new next note SvPlayArray
+ 4f8:	91 e0       	ldi	r25, 0x01	; 1
+ 4fa:	90 93 b4 04 	sts	0x04B4, r25
+		if (SvLiveArr == 1) {  // toggle to the other array, it's now the "live" array being "played"
+ 4fe:	80 91 87 04 	lds	r24, 0x0487
+ 502:	81 30       	cpi	r24, 0x01	; 1
+ 504:	a9 f1       	breq	.+106    	; 0x570 <__vector_16+0x166>
+			SvLiveArr = 0;
+			SvNextLiveArr = 1;
+		}
+		else {
+			SvLiveArr = 1;
+ 506:	90 93 87 04 	sts	0x0487, r25
+			SvNextLiveArr = 0;
+ 50a:	10 92 ad 04 	sts	0x04AD, r1
 		}
 	}
 }
- 4de:	ff 91       	pop	r31
- 4e0:	ef 91       	pop	r30
- 4e2:	9f 91       	pop	r25
- 4e4:	8f 91       	pop	r24
- 4e6:	4f 91       	pop	r20
- 4e8:	3f 91       	pop	r19
- 4ea:	2f 91       	pop	r18
- 4ec:	0f 90       	pop	r0
- 4ee:	0f be       	out	0x3f, r0	; 63
- 4f0:	0f 90       	pop	r0
- 4f2:	1f 90       	pop	r1
- 4f4:	18 95       	reti
+ 50e:	ff 91       	pop	r31
+ 510:	ef 91       	pop	r30
+ 512:	9f 91       	pop	r25
+ 514:	8f 91       	pop	r24
+ 516:	4f 91       	pop	r20
+ 518:	3f 91       	pop	r19
+ 51a:	2f 91       	pop	r18
+ 51c:	0f 90       	pop	r0
+ 51e:	0f be       	out	0x3f, r0	; 63
+ 520:	0f 90       	pop	r0
+ 522:	1f 90       	pop	r1
+ 524:	18 95       	reti
 		}
+		else SvArrayLiveCounter++;
 	}
-	else {  // this is a low note, notes < 48.  count through an element in the SvPlayArray[] for every (1 << SvNoteFactor) times 78k cycle.
-		
-		if (SvFactor78KCounter >= (1 << SvNoteFactor[SvLiveArr] ) ) {
+	else {  // this is a low note, notes <= 59.  count through an element in the SvPlayArray[] for every (1 << SvNoteFactor) times 78k cycle.
+		if ( SvFactor78KCounter >= ( ( 1 << SvNoteFactor[SvLiveArr] ) - 1 ) ) {
 			SvFactor78KCounter = 0;
- 4f6:	10 92 19 05 	sts	0x0519, r1
+ 526:	10 92 ae 04 	sts	0x04AE, r1
+			//SvNextPWMValue = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
 			if (SvArrayLiveCounter >= SvArrayElements[SvLiveArr] ) {
- 4fa:	e0 91 01 05 	lds	r30, 0x0501
- 4fe:	f0 e0       	ldi	r31, 0x00	; 0
- 500:	ec 50       	subi	r30, 0x0C	; 12
- 502:	fb 4f       	sbci	r31, 0xFB	; 251
- 504:	90 81       	ld	r25, Z
- 506:	80 91 16 05 	lds	r24, 0x0516
- 50a:	89 17       	cp	r24, r25
- 50c:	10 f0       	brcs	.+4      	; 0x512 <__vector_16+0xd2>
+ 52a:	e0 91 87 04 	lds	r30, 0x0487
+ 52e:	f0 e0       	ldi	r31, 0x00	; 0
+ 530:	e6 58       	subi	r30, 0x86	; 134
+ 532:	fb 4f       	sbci	r31, 0xFB	; 251
+ 534:	90 81       	ld	r25, Z
+ 536:	80 91 a8 04 	lds	r24, 0x04A8
+ 53a:	89 17       	cp	r24, r25
+ 53c:	18 f0       	brcs	.+6      	; 0x544 <__vector_16+0x13a>
 				SvArrayLiveCounter = 0;
- 50e:	10 92 16 05 	sts	0x0516, r1
+ 53e:	10 92 a8 04 	sts	0x04A8, r1
+ 542:	a2 cf       	rjmp	.-188    	; 0x488 <__vector_16+0x7e>
 			}
-			OCR0A = SvPlayArray[SvLiveArr][SvArrayLiveCounter];
- 512:	80 91 01 05 	lds	r24, 0x0501
- 516:	90 91 16 05 	lds	r25, 0x0516
- 51a:	f8 2f       	mov	r31, r24
- 51c:	e0 e0       	ldi	r30, 0x00	; 0
- 51e:	e9 0f       	add	r30, r25
- 520:	f1 1d       	adc	r31, r1
- 522:	ec 50       	subi	r30, 0x0C	; 12
- 524:	fd 4f       	sbci	r31, 0xFD	; 253
- 526:	80 81       	ld	r24, Z
- 528:	87 bd       	out	0x27, r24	; 39
-			SvArrayLiveCounter++;
- 52a:	80 91 16 05 	lds	r24, 0x0516
- 52e:	8f 5f       	subi	r24, 0xFF	; 255
- 530:	80 93 16 05 	sts	0x0516, r24
- 534:	ad cf       	rjmp	.-166    	; 0x490 <__vector_16+0x50>
+			else SvArrayLiveCounter++;
+ 544:	80 91 a8 04 	lds	r24, 0x04A8
+ 548:	8f 5f       	subi	r24, 0xFF	; 255
+ 54a:	80 93 a8 04 	sts	0x04A8, r24
+ 54e:	9c cf       	rjmp	.-200    	; 0x488 <__vector_16+0x7e>
+			SvLiveNoteDurationCounter = 0;
+			SvResetGoToNextNote = 1;
+		}
+		else SvLiveNoteDurationCounter++;
+	}
+	else SvLive78KCyclesCounter++;
+ 550:	80 91 ab 04 	lds	r24, 0x04AB
+ 554:	90 91 ac 04 	lds	r25, 0x04AC
+ 558:	01 96       	adiw	r24, 0x01	; 1
+ 55a:	90 93 ac 04 	sts	0x04AC, r25
+ 55e:	80 93 ab 04 	sts	0x04AB, r24
+ 562:	b7 cf       	rjmp	.-146    	; 0x4d2 <__vector_16+0xc8>
+		SvLive78KCyclesCounter = 0;
+		if (SvLiveNoteDurationCounter >= SvArrNoteDuration[SvLiveArr] ) {
+			SvLiveNoteDurationCounter = 0;
+			SvResetGoToNextNote = 1;
+		}
+		else SvLiveNoteDurationCounter++;
+ 564:	80 91 86 04 	lds	r24, 0x0486
+ 568:	8f 5f       	subi	r24, 0xFF	; 255
+ 56a:	80 93 86 04 	sts	0x0486, r24
+ 56e:	b1 cf       	rjmp	.-158    	; 0x4d2 <__vector_16+0xc8>
+		SvLive78KCyclesCounter = 0;
+		SvLiveNoteDurationCounter = 0;
+		SvFactor78KCounter = 0;
+		SvStartCalculatingNextNote = 1;  // flag indicates it's time to start calculating the new next note SvPlayArray
+		if (SvLiveArr == 1) {  // toggle to the other array, it's now the "live" array being "played"
+			SvLiveArr = 0;
+ 570:	10 92 87 04 	sts	0x0487, r1
+			SvNextLiveArr = 1;
+ 574:	80 93 ad 04 	sts	0x04AD, r24
+ 578:	ca cf       	rjmp	.-108    	; 0x50e <__vector_16+0x104>
 
-00000536 <__divmodhi4>:
- 536:	97 fb       	bst	r25, 7
- 538:	09 2e       	mov	r0, r25
- 53a:	07 26       	eor	r0, r23
- 53c:	0a d0       	rcall	.+20     	; 0x552 <__divmodhi4_neg1>
- 53e:	77 fd       	sbrc	r23, 7
- 540:	04 d0       	rcall	.+8      	; 0x54a <__divmodhi4_neg2>
- 542:	0c d0       	rcall	.+24     	; 0x55c <__udivmodhi4>
- 544:	06 d0       	rcall	.+12     	; 0x552 <__divmodhi4_neg1>
- 546:	00 20       	and	r0, r0
- 548:	1a f4       	brpl	.+6      	; 0x550 <__divmodhi4_exit>
+0000057a <__udivmodhi4>:
+ 57a:	aa 1b       	sub	r26, r26
+ 57c:	bb 1b       	sub	r27, r27
+ 57e:	51 e1       	ldi	r21, 0x11	; 17
+ 580:	07 c0       	rjmp	.+14     	; 0x590 <__udivmodhi4_ep>
 
-0000054a <__divmodhi4_neg2>:
- 54a:	70 95       	com	r23
- 54c:	61 95       	neg	r22
- 54e:	7f 4f       	sbci	r23, 0xFF	; 255
+00000582 <__udivmodhi4_loop>:
+ 582:	aa 1f       	adc	r26, r26
+ 584:	bb 1f       	adc	r27, r27
+ 586:	a6 17       	cp	r26, r22
+ 588:	b7 07       	cpc	r27, r23
+ 58a:	10 f0       	brcs	.+4      	; 0x590 <__udivmodhi4_ep>
+ 58c:	a6 1b       	sub	r26, r22
+ 58e:	b7 0b       	sbc	r27, r23
 
-00000550 <__divmodhi4_exit>:
- 550:	08 95       	ret
+00000590 <__udivmodhi4_ep>:
+ 590:	88 1f       	adc	r24, r24
+ 592:	99 1f       	adc	r25, r25
+ 594:	5a 95       	dec	r21
+ 596:	a9 f7       	brne	.-22     	; 0x582 <__udivmodhi4_loop>
+ 598:	80 95       	com	r24
+ 59a:	90 95       	com	r25
+ 59c:	bc 01       	movw	r22, r24
+ 59e:	cd 01       	movw	r24, r26
+ 5a0:	08 95       	ret
 
-00000552 <__divmodhi4_neg1>:
- 552:	f6 f7       	brtc	.-4      	; 0x550 <__divmodhi4_exit>
- 554:	90 95       	com	r25
- 556:	81 95       	neg	r24
- 558:	9f 4f       	sbci	r25, 0xFF	; 255
- 55a:	08 95       	ret
+000005a2 <__divmodhi4>:
+ 5a2:	97 fb       	bst	r25, 7
+ 5a4:	09 2e       	mov	r0, r25
+ 5a6:	07 26       	eor	r0, r23
+ 5a8:	0a d0       	rcall	.+20     	; 0x5be <__divmodhi4_neg1>
+ 5aa:	77 fd       	sbrc	r23, 7
+ 5ac:	04 d0       	rcall	.+8      	; 0x5b6 <__divmodhi4_neg2>
+ 5ae:	e5 df       	rcall	.-54     	; 0x57a <__udivmodhi4>
+ 5b0:	06 d0       	rcall	.+12     	; 0x5be <__divmodhi4_neg1>
+ 5b2:	00 20       	and	r0, r0
+ 5b4:	1a f4       	brpl	.+6      	; 0x5bc <__divmodhi4_exit>
 
-0000055c <__udivmodhi4>:
- 55c:	aa 1b       	sub	r26, r26
- 55e:	bb 1b       	sub	r27, r27
- 560:	51 e1       	ldi	r21, 0x11	; 17
- 562:	07 c0       	rjmp	.+14     	; 0x572 <__udivmodhi4_ep>
+000005b6 <__divmodhi4_neg2>:
+ 5b6:	70 95       	com	r23
+ 5b8:	61 95       	neg	r22
+ 5ba:	7f 4f       	sbci	r23, 0xFF	; 255
 
-00000564 <__udivmodhi4_loop>:
- 564:	aa 1f       	adc	r26, r26
- 566:	bb 1f       	adc	r27, r27
- 568:	a6 17       	cp	r26, r22
- 56a:	b7 07       	cpc	r27, r23
- 56c:	10 f0       	brcs	.+4      	; 0x572 <__udivmodhi4_ep>
- 56e:	a6 1b       	sub	r26, r22
- 570:	b7 0b       	sbc	r27, r23
+000005bc <__divmodhi4_exit>:
+ 5bc:	08 95       	ret
 
-00000572 <__udivmodhi4_ep>:
- 572:	88 1f       	adc	r24, r24
- 574:	99 1f       	adc	r25, r25
- 576:	5a 95       	dec	r21
- 578:	a9 f7       	brne	.-22     	; 0x564 <__udivmodhi4_loop>
- 57a:	80 95       	com	r24
- 57c:	90 95       	com	r25
- 57e:	bc 01       	movw	r22, r24
- 580:	cd 01       	movw	r24, r26
- 582:	08 95       	ret
+000005be <__divmodhi4_neg1>:
+ 5be:	f6 f7       	brtc	.-4      	; 0x5bc <__divmodhi4_exit>
+ 5c0:	90 95       	com	r25
+ 5c2:	81 95       	neg	r24
+ 5c4:	9f 4f       	sbci	r25, 0xFF	; 255
+ 5c6:	08 95       	ret
 
-00000584 <_exit>:
- 584:	f8 94       	cli
+000005c8 <_exit>:
+ 5c8:	f8 94       	cli
 
-00000586 <__stop_program>:
- 586:	ff cf       	rjmp	.-2      	; 0x586 <__stop_program>
+000005ca <__stop_program>:
+ 5ca:	ff cf       	rjmp	.-2      	; 0x5ca <__stop_program>

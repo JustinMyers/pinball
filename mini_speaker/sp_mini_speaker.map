@@ -17,16 +17,18 @@ Common symbol       size              file
 SvLiveNoteDurationCounter
                     0x1               sp_mini_speaker.o
 SvLiveArr           0x1               sp_mini_speaker.o
-SvNotesToPlay       0x1e              sp_mini_speaker.o
+SvNotesToPlay       0x20              sp_mini_speaker.o
 SvArrayLiveCounter  0x1               sp_mini_speaker.o
+SvResetGoToNextNote
+                    0x1               sp_mini_speaker.o
+SvNextPWMValue      0x1               sp_mini_speaker.o
+SvLive78KCyclesCounter
+                    0x2               sp_mini_speaker.o
 SvNextLiveArr       0x1               sp_mini_speaker.o
-SvNoteFactor        0x2               sp_mini_speaker.o
 SvFactor78KCounter  0x1               sp_mini_speaker.o
 SvNumberOfNotesToPlay
                     0x1               sp_mini_speaker.o
-SvNoteForPlayArray  0x5               sp_mini_speaker.o
-SvLive78kCyclesCounter
-                    0x2               sp_mini_speaker.o
+SvNoteForPlayArray  0x4               sp_mini_speaker.o
 SvStartCalculatingNextNote
                     0x1               sp_mini_speaker.o
 
@@ -141,7 +143,7 @@ LOAD /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x5ac
+.text           0x00000000      0x5cc
  *(.vectors)
  .vectors       0x00000000       0x68 /usr/lib/gcc/avr/4.3.5/../../../avr/lib/avr5/crtm328p.o
                 0x00000000                __vectors
@@ -222,31 +224,31 @@ LOAD /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a
                 0x000000a2                __vector_10
                 0x000000a2                __vector_18
                 0x000000a2                __vector_20
- .text          0x000000a6      0x4b4 sp_mini_speaker.o
+ .text          0x000000a6      0x4d4 sp_mini_speaker.o
                 0x000000a6                SfToneGenerator
-                0x000002de                Start_Timer0_PWM
-                0x00000302                main
-                0x00000424                __vector_16
- .text          0x0000055a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_udivmodhi4.o)
- .text          0x0000055a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_divmodhi4.o)
- .text          0x0000055a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
- .text          0x0000055a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_copy_data.o)
- .text          0x0000055a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_clear_bss.o)
-                0x0000055a                . = ALIGN (0x2)
+                0x000002b2                Start_Timer0_PWM
+                0x000002d6                main
+                0x0000040a                __vector_16
+ .text          0x0000057a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_udivmodhi4.o)
+ .text          0x0000057a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_divmodhi4.o)
+ .text          0x0000057a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
+ .text          0x0000057a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_copy_data.o)
+ .text          0x0000057a        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_clear_bss.o)
+                0x0000057a                . = ALIGN (0x2)
  *(.text.*)
- .text.libgcc   0x0000055a       0x28 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_udivmodhi4.o)
-                0x0000055a                __udivmodhi4
- .text.libgcc   0x00000582       0x26 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_divmodhi4.o)
-                0x00000582                __divmodhi4
-                0x00000582                _div
- .text.libgcc   0x000005a8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x000005a8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_copy_data.o)
- .text.libgcc   0x000005a8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_clear_bss.o)
-                0x000005a8                . = ALIGN (0x2)
+ .text.libgcc   0x0000057a       0x28 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_udivmodhi4.o)
+                0x0000057a                __udivmodhi4
+ .text.libgcc   0x000005a2       0x26 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_divmodhi4.o)
+                0x000005a2                __divmodhi4
+                0x000005a2                _div
+ .text.libgcc   0x000005c8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x000005c8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc   0x000005c8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_clear_bss.o)
+                0x000005c8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000005a8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
-                0x000005a8                exit
-                0x000005a8                _exit
+ .fini9         0x000005c8        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
+                0x000005c8                exit
+                0x000005c8                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -265,11 +267,11 @@ LOAD /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000005a8        0x4 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
+ .fini0         0x000005c8        0x4 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x000005ac                _etext = .
+                0x000005cc                _etext = .
 
-.data           0x00800100      0x384 load address 0x000005ac
+.data           0x00800100      0x384 load address 0x000005cc
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 /usr/lib/gcc/avr/4.3.5/../../../avr/lib/avr5/crtm328p.o
@@ -294,40 +296,42 @@ LOAD /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a
                 0x00800484                _edata = .
                 0x00800484                PROVIDE (__data_end, .)
 
-.bss            0x00800484       0x2e
+.bss            0x00800484       0x31
                 0x00800484                PROVIDE (__bss_start, .)
  *(.bss)
  .bss           0x00800484        0x0 /usr/lib/gcc/avr/4.3.5/../../../avr/lib/avr5/crtm328p.o
- .bss           0x00800484        0x0 sp_mini_speaker.o
- .bss           0x00800484        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_udivmodhi4.o)
- .bss           0x00800484        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_divmodhi4.o)
- .bss           0x00800484        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
- .bss           0x00800484        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_copy_data.o)
- .bss           0x00800484        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x00800484        0x2 sp_mini_speaker.o
+                0x00800484                SvNoteFactor
+ .bss           0x00800486        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_udivmodhi4.o)
+ .bss           0x00800486        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_divmodhi4.o)
+ .bss           0x00800486        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_exit.o)
+ .bss           0x00800486        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_copy_data.o)
+ .bss           0x00800486        0x0 /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a(_clear_bss.o)
  *(.bss*)
  *(COMMON)
- COMMON         0x00800484       0x2e sp_mini_speaker.o
-                0x00800484                SvLiveNoteDurationCounter
-                0x00800485                SvLiveArr
-                0x00800486                SvNotesToPlay
-                0x008004a4                SvArrayLiveCounter
-                0x008004a5                SvNextLiveArr
-                0x008004a6                SvNoteFactor
-                0x008004a8                SvFactor78KCounter
-                0x008004a9                SvNumberOfNotesToPlay
-                0x008004aa                SvNoteForPlayArray
-                0x008004af                SvLive78kCyclesCounter
-                0x008004b1                SvStartCalculatingNextNote
-                0x008004b2                PROVIDE (__bss_end, .)
-                0x000005ac                __data_load_start = LOADADDR (.data)
-                0x00000930                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800486       0x2f sp_mini_speaker.o
+                0x00800486                SvLiveNoteDurationCounter
+                0x00800487                SvLiveArr
+                0x00800488                SvNotesToPlay
+                0x008004a8                SvArrayLiveCounter
+                0x008004a9                SvResetGoToNextNote
+                0x008004aa                SvNextPWMValue
+                0x008004ab                SvLive78KCyclesCounter
+                0x008004ad                SvNextLiveArr
+                0x008004ae                SvFactor78KCounter
+                0x008004af                SvNumberOfNotesToPlay
+                0x008004b0                SvNoteForPlayArray
+                0x008004b4                SvStartCalculatingNextNote
+                0x008004b5                PROVIDE (__bss_end, .)
+                0x000005cc                __data_load_start = LOADADDR (.data)
+                0x00000950                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x008004b2        0x0
-                0x008004b2                PROVIDE (__noinit_start, .)
+.noinit         0x008004b5        0x0
+                0x008004b5                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x008004b2                PROVIDE (__noinit_end, .)
-                0x008004b2                _end = .
-                0x008004b2                PROVIDE (__heap_start, .)
+                0x008004b5                PROVIDE (__noinit_end, .)
+                0x008004b5                _end = .
+                0x008004b5                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -386,36 +390,36 @@ LOAD /usr/lib/gcc/avr/4.3.5/avr5/libgcc.a
                 0x00000000       0x20 sp_mini_speaker.o
 
 .debug_pubnames
-                0x00000000      0x1e6
+                0x00000000      0x211
  *(.debug_pubnames)
  .debug_pubnames
-                0x00000000      0x1e6 sp_mini_speaker.o
+                0x00000000      0x211 sp_mini_speaker.o
 
-.debug_info     0x00000000      0x34d
+.debug_info     0x00000000      0x366
  *(.debug_info)
- .debug_info    0x00000000      0x34d sp_mini_speaker.o
+ .debug_info    0x00000000      0x366 sp_mini_speaker.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000      0x10d
+.debug_abbrev   0x00000000       0xf8
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x10d sp_mini_speaker.o
+ .debug_abbrev  0x00000000       0xf8 sp_mini_speaker.o
 
-.debug_line     0x00000000      0x36c
+.debug_line     0x00000000      0x3f2
  *(.debug_line)
- .debug_line    0x00000000      0x36c sp_mini_speaker.o
+ .debug_line    0x00000000      0x3f2 sp_mini_speaker.o
 
 .debug_frame    0x00000000       0x50
  *(.debug_frame)
  .debug_frame   0x00000000       0x50 sp_mini_speaker.o
 
-.debug_str      0x00000000      0x28a
+.debug_str      0x00000000      0x29e
  *(.debug_str)
- .debug_str     0x00000000      0x28a sp_mini_speaker.o
-                                0x2be (size before relaxing)
+ .debug_str     0x00000000      0x29e sp_mini_speaker.o
+                                0x2d2 (size before relaxing)
 
-.debug_loc      0x00000000       0x6d
+.debug_loc      0x00000000       0x8a
  *(.debug_loc)
- .debug_loc     0x00000000       0x6d sp_mini_speaker.o
+ .debug_loc     0x00000000       0x8a sp_mini_speaker.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -432,10 +436,11 @@ SvArrayElements                                   sp_mini_speaker.o
 SvArrayLiveCounter                                sp_mini_speaker.o
 SvDurationResolution                              sp_mini_speaker.o
 SvFactor78KCounter                                sp_mini_speaker.o
-SvLive78kCyclesCounter                            sp_mini_speaker.o
+SvLive78KCyclesCounter                            sp_mini_speaker.o
 SvLiveArr                                         sp_mini_speaker.o
 SvLiveNoteDurationCounter                         sp_mini_speaker.o
 SvNextLiveArr                                     sp_mini_speaker.o
+SvNextPWMValue                                    sp_mini_speaker.o
 SvNoteFactor                                      sp_mini_speaker.o
 SvNoteForPlayArray                                sp_mini_speaker.o
 SvNoteHighNOTLow                                  sp_mini_speaker.o
@@ -443,6 +448,7 @@ SvNoteWaveLength78K                               sp_mini_speaker.o
 SvNotesToPlay                                     sp_mini_speaker.o
 SvNumberOfNotesToPlay                             sp_mini_speaker.o
 SvPlayArray                                       sp_mini_speaker.o
+SvResetGoToNextNote                               sp_mini_speaker.o
 SvSineWaveLookup256                               sp_mini_speaker.o
 SvStartCalculatingNextNote                        sp_mini_speaker.o
 __bad_interrupt                                   /usr/lib/gcc/avr/4.3.5/../../../avr/lib/avr5/crtm328p.o
