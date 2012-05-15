@@ -1,0 +1,11 @@
+# Compiled source #
+###################
+*.o
+*.lst
+*.o.d
+*.eep
+*.hex
+*.lss
+*.map
+*.sym
+*.elf
