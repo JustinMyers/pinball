@@ -1,0 +1,54 @@
+make program
+
+Compiling: sp_mini_speaker.c
+avr-gcc -c -mmcu=atmega328p -I. -gdwarf-2 -DF_CPU=20000000UL  -O0 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -Wa,-adhlns=sp_mini_speaker.lst  -std=gnu99 -MD -MP -MF .dep/sp_mini_speaker.o.d sp_mini_speaker.c -o sp_mini_speaker.o 
+
+Linking: sp_mini_speaker.elf
+avr-gcc -mmcu=atmega328p -I. -gdwarf-2 -DF_CPU=20000000UL  -O0 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -Wa,-adhlns=sp_mini_speaker.o  -std=gnu99 -MD -MP -MF .dep/sp_mini_speaker.elf.d sp_mini_speaker.o --output sp_mini_speaker.elf -Wl,-Map=sp_mini_speaker.map,--cref    -lm
+
+Creating load file for Flash: sp_mini_speaker.hex
+avr-objcopy -O ihex -R .eeprom sp_mini_speaker.elf sp_mini_speaker.hex
+
+Creating load file for EEPROM: sp_mini_speaker.eep
+avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" \
+	--change-section-lma .eeprom=0 -O ihex sp_mini_speaker.elf sp_mini_speaker.eep
+avr-objcopy: --change-section-lma .eeprom=0x00000000 never used
+avrdude -p atmega328p -P /dev/ttyUSB0 -c buspirate    -U flash:w:sp_mini_speaker.hex 
+
+Detecting BusPirate...
+**  
+**  Bus Pirate v3b
+**  Firmware v5.10 (r559)  Bootloader v4.4
+**  DEVID:0x0447 REVID:0x3043 (24FJ64GA002 B5)
+**  http://dangerousprototypes.com
+**
+BusPirate: using BINARY mode
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.02s
+
+avrdude: Device signature = 0x1e950f
+avrdude: NOTE: FLASH memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "sp_mini_speaker.hex"
+avrdude: input file sp_mini_speaker.hex auto detected as Intel Hex
+avrdude: writing flash (2832 bytes):
+
+Writing | ################################################## | 100% 23.13s
+
+avrdude: 2832 bytes of flash written
+avrdude: verifying flash memory against sp_mini_speaker.hex:
+avrdude: load data flash data from input file sp_mini_speaker.hex:
+avrdude: input file sp_mini_speaker.hex auto detected as Intel Hex
+avrdude: input file sp_mini_speaker.hex contains 2832 bytes
+avrdude: reading on-chip flash data:
+
+Reading | ################################################## | 100% 22.83s
+
+avrdude: verifying ...
+avrdude: 2832 bytes of flash verified
+
+avrdude: safemode: Fuses OK
+
+avrdude done.  Thank you.
